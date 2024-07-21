@@ -1,0 +1,148 @@
+Card
+.all-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: white;
+}
+
+.card {
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+}
+
+.card-bar {
+    display: flex;
+    background-color: #ebeef4;
+    flex-direction: column;
+    padding: 0rem .5rem;
+    margin: -.5rem .5rem .2rem .5rem;
+    border-radius: .5rem;
+}
+
+.card-bar .f-span {
+    font-size: .87rem;
+    font-weight: 600;
+}
+
+.card-bar .s-span {
+    font-size: .75rem;
+    font-weight: 400;
+}
+
+.card-bar .card-icon-bar {
+    padding-right: .3rem;
+}
+
+.card-header,
+.card-footer {
+    border-color: #ebeef4;
+    background-color: #fff;
+    color: #798eb3;
+    padding: 15px;
+}
+
+.card-title {
+    padding: 5px 0 0px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #012970;
+    font-family: "Poppins", sans-serif;
+}
+
+.dashboard .card-icon {
+    font-size: 50px;
+    line-height: 10rem;
+    width: 54px;
+    height: 25px;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.card-body {
+    padding: 0 10px 0px 10px;
+}
+
+.colr-0 {
+    background-color: rgb(147, 98, 245);
+}
+
+.colr-1 {
+    background-color: rgba(245, 133, 20, 0.767)
+}
+
+.colr-2 {
+    background-color: rgba(204, 0, 255, 0.671);
+}
+
+.colr-3 {
+    background-color: rgba(0, 0, 255, 0.692);
+}
+
+.left {
+    justify-items: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+.left span {
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: white;
+}
+
+.left h5 {
+    color: white;
+}
+
+.left p {
+    font-size: .8rem;
+    padding-top: .8rem;
+    padding-bottom: 0;
+    color: white;
+}
+
+.right {
+    justify-items: center;
+    align-items: center;
+    margin-top: 3rem;
+}
+
+
+
+/* // Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
+   
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+   
+ }
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+    .card-chart{
+        padding-bottom: .3rem;
+    }
+    .card-chart .chart{
+        height: .9rem;
+    }
+
+    .barChart{
+        margin-bottom: 1.2rem;
+    }
+ }
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+  
+ }
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) { 
+  
+ }
