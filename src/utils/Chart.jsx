@@ -13,7 +13,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { fetchWastaniWaUfaulu } from "../api/takwimuAPI";
+import { fetchUfauluWaKusoma, fetchUmahiriWaKuandika, fetchUmahiriWaKuhesabu, fetchWastaniWaUfaulu } from "../api/takwimuAPI";
 
 ChartJS.register(
   CategoryScale,
@@ -367,20 +367,19 @@ export function RipotiYaShuleChart({ month, year }) {
 // end of report chart
 
 // takuimu chart
-export function WastaniWaUfaulu({ council, month, year }) {
+
+export function WastaniWaUfaulu({ year, month, council }) {
   const [chartData, setChartData] = useState(null);
 
-  // const { data: WastaniWaUfaulu, isLoading, isError } = useQuery(['WastaniWaUfaulu', month, year, councils], () => fetchWastaniWaUfaulu(month, year, councils));
-
-  const { data: WastaniWaUfaulu, isLoading: isLoadingWastani, isError: isErrorWasitani } =
-    useQuery(['WastaniWaUfaulu', council, month, year], fetchWastaniWaUfaulu, { enabled: !!council });
+  const { data: wastaniWaUfaulu, isLoading: isLoadingWastani, isError: isErrorWastani } =
+    useQuery(['wastaniWaUfaulu', year, month, council], fetchWastaniWaUfaulu, { enabled: !!council });
 
   useEffect(() => {
-    if (WastaniWaUfaulu) {
-      const labels = WastaniWaUfaulu?.map(item => item.wilaya);
-      const kusoma = WastaniWaUfaulu?.map(item => item.kusoma);
-      const kuandika = WastaniWaUfaulu?.map(item => item.kuandika);
-      const kuhesabu = WastaniWaUfaulu?.map(item => item.kuhesabu);
+    if (wastaniWaUfaulu) {
+      const labels = wastaniWaUfaulu?.map(item => item.shule);
+      const kusoma = wastaniWaUfaulu?.map(item => item.kusoma);
+      const kuandika = wastaniWaUfaulu?.map(item => item.kuandika);
+      const kuhesabu = wastaniWaUfaulu?.map(item => item.kuhesabu);
 
       setChartData({
         labels,
@@ -403,30 +402,24 @@ export function WastaniWaUfaulu({ council, month, year }) {
         ],
       });
     }
-  }, [WastaniWaUfaulu]);
+  }, [wastaniWaUfaulu]);
 
   const options = {
     responsive: true,
-    indexAxis: 'y',
-    // plugins: {
-    //   title: {
-    //     display: true,
-    //     text: 'Wilaya',
-    //   },
-    // },
+    indexAxis: 'y', // This option changes the chart to horizontal
     scales: {
       x: {
-        title: {
-          display: true,
-          text: 'Wilaya',
-        },
-      },
-      y: {
         title: {
           display: true,
           text: 'Asilimia',
         },
         beginAtZero: true,
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Shule',
+        },
       },
     },
   };
@@ -437,6 +430,248 @@ export function WastaniWaUfaulu({ council, month, year }) {
         <Bar className="barChart"
           data={chartData}
           options={options}
+          height={2800}
+        />
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+}
+
+export function UfauluWaKusoma({ year, month, council }) {
+  const [chartData, setChartData] = useState(null);
+
+  const { data: ufauluWaKusoma, isLoading: isLoadingKuhesabu, isError: isErrorKuhesabu } =
+    useQuery(['ufauluWaKusoma', year, month, council], fetchUfauluWaKusoma, { enabled: !!council });
+
+  useEffect(() => {
+    if (ufauluWaKusoma) {
+      const labels = ufauluWaKusoma?.map(item => item.shule);
+      const wastani = ufauluWaKusoma?.map(item => item?.wastani);
+
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: 'wastani',
+            data: wastani,
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+          }
+        ],
+      });
+    }
+  }, [ufauluWaKusoma]);
+
+  const options = {
+    responsive: true,
+    indexAxis: 'y',
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Asilimia',
+        },
+        beginAtZero: true,
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Shule',
+        },
+      },
+    },
+  };
+
+  return (
+    <div>
+      {chartData ? (
+        <Bar className="barChart"
+          data={chartData}
+          options={options}
+          height={2800}
+        />
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+}
+// export function UfauluWaKusoma({ year, month, council }) {
+//   const [chartData, setChartData] = useState(null);
+
+//   const { data: ufauluWaKusoma, isLoading: isLoadingKusoma, isError: isErrorKusoma } =
+//     useQuery(['ufauluWaKusoma', year, month, council], fetchUfauluWaKusoma, { enabled: !!council && !!year && !!month, });
+
+//   // console.log(ufauluWaShule)
+
+//   useEffect(() => {
+//     if (ufauluWaKusoma) {
+//       const labels = ufauluWaKusoma?.map(item => item?.shule);
+//       const wastani = ufauluWaKusoma?.map(item => item?.wastani);
+
+//       console.log(labels)
+
+//       setChartData({
+//         labels,
+//         datasets: [
+//           {
+//             label: 'Wastani',
+//             data: wastani,
+//             backgroundColor: 'rgba(75, 192, 192, 0.6)',
+//           },
+//         ],
+//       });
+//     }
+//   }, [ufauluWaKusoma]);
+
+//   const options = {
+//     responsive: true,
+//     indexAxis: 'y', // This option changes the chart to horizontal
+//     scales: {
+//       x: {
+//         title: {
+//           display: true,
+//           text: 'Asilimia',
+//         },
+//         beginAtZero: true,
+//       },
+//       y: {
+//         title: {
+//           display: true,
+//           text: 'Shule',
+//         },
+//       },
+//     },
+//   };
+
+//   return (
+//     <div>
+//       {isLoadingKusoma ? (
+//         <p>Loading...</p>
+//       ) : isErrorKusoma ? (
+//         <p>Error loading data</p>
+//       ) : (
+//         <Bar className="barChart"
+//           data={chartData}
+//           options={options}
+//           height={2800}
+//         />
+//       )}
+//     </div>
+//   );
+// }
+
+export function UfauluWaKuandika({ year, month, council }) {
+  const [chartData, setChartData] = useState(null);
+
+  const { data: ufauluWaKuandika, isLoading: isLoadingKuandika, isError: isErrorKuandika } =
+    useQuery(['ufauluWaKuandika', year, month, council], fetchUmahiriWaKuandika, { enabled: !!council });
+
+  useEffect(() => {
+    if (ufauluWaKuandika) {
+      const labels = ufauluWaKuandika?.map(item => item.shule);
+      const wastani = ufauluWaKuandika?.map(item => item?.wastani);
+
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: 'wastani',
+            data: wastani,
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+          }
+        ],
+      });
+    }
+  }, [ufauluWaKuandika]);
+
+  const options = {
+    responsive: true,
+    indexAxis: 'y',
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Asilimia',
+        },
+        beginAtZero: true,
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Shule',
+        },
+      },
+    },
+  };
+
+  return (
+    <div>
+      {chartData ? (
+        <Bar className="barChart"
+          data={chartData}
+          options={options}
+          height={2800}
+        />
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+}
+
+export function UfauluWaKuhesabu({ year, month, council }) {
+  const [chartData, setChartData] = useState(null);
+
+  const { data: ufauluWaKuhesabu, isLoading: isLoadingKuhesabu, isError: isErrorKuhesabu } =
+    useQuery(['ufauluWaKuhesabu', year, month, council], fetchUmahiriWaKuhesabu, { enabled: !!council });
+
+  useEffect(() => {
+    if (ufauluWaKuhesabu) {
+      const labels = ufauluWaKuhesabu?.map(item => item.shule);
+      const wastani = ufauluWaKuhesabu?.map(item => item?.wastani);
+
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: 'wastani',
+            data: wastani,
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+          }
+        ],
+      });
+    }
+  }, [ufauluWaKuhesabu]);
+
+  const options = {
+    responsive: true,
+    indexAxis: 'y',
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Asilimia',
+        },
+        beginAtZero: true,
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Shule',
+        },
+      },
+    },
+  };
+
+  return (
+    <div>
+      {chartData ? (
+        <Bar className="barChart"
+          data={chartData}
+          options={options}
+          height={2800}
         />
       ) : (
         <p>Loading...</p>

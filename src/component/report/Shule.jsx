@@ -161,7 +161,7 @@ export default function Shule() {
   }
 
   if (isErrorSchool) {
-    return <Alert message="Error" description={fetchError.message} type="error" showIcon />;
+    return <Alert className='flex-center' message="Error" description={fetchError.message} type="error" showIcon />;
   }
 
 

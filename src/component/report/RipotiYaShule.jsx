@@ -201,10 +201,10 @@ export default function RipotiYaShule() {
       ...getColumnSearchProps('jina'),
     },
     {
-      title: 'Jisia',
-      dataIndex: 'jisia',
-      key: 'jisia',
-      ...getColumnSearchProps('jisia'),
+      title: 'jinsia',
+      dataIndex: 'jinsia',
+      key: 'jinsia',
+      ...getColumnSearchProps('jinsia'),
     },
     {
       title: 'Sauti za herufi	',

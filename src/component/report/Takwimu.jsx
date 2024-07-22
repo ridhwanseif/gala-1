@@ -3,16 +3,14 @@ import { useQuery } from 'react-query';
 import { SearchOutlined } from '@ant-design/icons';
 import { fetchCouncil, fetchMonth, fetchYear } from '../../api/upimajiFilterAPI';
 import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
-import { fetchRipotiYaShule } from '../../api/ripoti';
 import { Space, Table, Tag, Tabs, Input, Button } from 'antd';
-import { ChartBar, RipotiYaShuleChart, WastaniWaUfaulu } from '../../utils/Chart';
+import { ChartBar, RipotiYaShuleChart, UfauluWaKuandika, UfauluWaKuhesabu, UfauluWaKusoma, WastaniWaUfaulu } from '../../utils/Chart';
+import { fetchMaelezoYaShule } from '../../api/takwimuAPI';
 
 export default function RipotiYaShule() {
 
   const [year, setYear] = useState();
   const [month, setMonth] = useState();
-  const [school, setSchool] = useState();
-  const [schoolNo, setSchoolNo] = useState();
   const [council, setCouncil] = useState();
 
 
@@ -22,6 +20,9 @@ export default function RipotiYaShule() {
   const { data: schools, isLoading: isLoadingSchool, isError: isErrorSchool } = useQuery('schools', fetchMwatwaraSchools);
   const { data: councils, isLoading: isLoadingCouncil, isError: isErrorCouncil } = useQuery('councils', fetchCouncil);
 
+  const { data: maelezoYaShule, isLoading: isLoadingMaelezoYaShule, isError: isErrorMaelezoYaShule } =
+    useQuery(['maelezoYaShule', year, month, council], fetchMaelezoYaShule, { enabled: !!council });
+
 
   // console.log(JSON.stringify(schoolReport, null, 2))
 
@@ -30,7 +31,39 @@ export default function RipotiYaShule() {
   const [size, setSize] = useState('small');
   const searchInput = useRef(null);
 
+  const columns1 = [
+    {
+      title: 'No',
+      dataIndex: 'no',
+      key: 'no',
+    },
+    {
+      title: 'Jina la Shule',
+      dataIndex: 'shule',
+      key: 'shule',
+    },
+    {
+      title: 'Maendeleo (%)',
+      dataIndex: 'address',
+      key: 'address',
+    },
 
+    {
+      title: 'Wastani (Chini ya 300)',
+      dataIndex: 'wastani',
+      key: 'wastani',
+    },
+
+  ];
+  const data1 = [
+    {
+      key: '1',
+      name: '3',
+      age: 32,
+      address: '43',
+      tags: '23',
+    },
+  ]
 
 
   return (
@@ -142,38 +175,48 @@ export default function RipotiYaShule() {
                     key: '1',
                     children: (
                       <WastaniWaUfaulu
-                      year={year}
-                      month={month}
-                      council={council} />
+                        year={year}
+                        month={month}
+                        council={council} />
                     ),
                   },
                   {
-                    label: 'Ufaulu wa shule',
+                    label: 'Ufaulu wa Kusoma',
                     key: '2',
                     children: (
-                      <ChartBar />
-
+                      <UfauluWaKusoma
+                        year={year}
+                        month={month}
+                        council={council}
+                      />
                     ),
                   },
                   {
                     label: 'Umahiri ya kuandika',
                     key: '3',
                     children: (
-                      <ChartBar />
+                      <UfauluWaKuandika
+                        year={year}
+                        month={month}
+                        council={council}
+                      />
                     ),
                   },
                   {
                     label: 'Umahiri ya kuhesabu',
                     key: '4',
                     children: (
-                      <ChartBar />
+                      <UfauluWaKuhesabu
+                        year={year}
+                        month={month}
+                        council={council} />
                     ),
                   },
                   {
                     label: 'Maendeleo wa Shule',
                     key: '5',
                     children: (
-                      <ChartBar />
+                      <Table columns={columns1} dataSource={maelezoYaShule} />
                     ),
                   },
                 ]}

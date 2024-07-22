@@ -195,83 +195,99 @@ export default function RipotiYaShule() {
 
   const colsHalmashauri = [
     {
-      title: 'Nambari ya Usajili ya shule',
+      title: 'No/Usajili',
       dataIndex: 'sn',
+      width: '.6%',
       key: 'sn',
       // ...getColumnSearchProps('sn'),
+      fixed: 'left',
     },
     {
       title: 'Jina la shule',
       dataIndex: 'jina',
       key: 'jina',
-      width: '18%',
+      width: '2.2%',
       ...getColumnSearchProps('jina'),
+      fixed: 'left',
+      sorter: true,
     },
     {
       title: 'Jina la Mwanafunzi',
       dataIndex: 'jisia',
+      width: '1%',
       key: 'jisia',
-      ...getColumnSearchProps('jisia'),
+      // ...getColumnSearchProps('jisia'),
     },
     {
       title: 'Jinsia',
       dataIndex: 'sauti',
+      width: '.7%',
       key: 'sauti',
     },
     {
       title: 'Sauti za herufi',
       dataIndex: 'ufauluSauti',
+      width: '.7%',
       key: 'ufauluSauti',
     },
     {
       title: 'Maneno ya kubuni',
       dataIndex: 'kubuni',
+      width: '.8%',
       key: 'kubuni',
     },
     {
       title: 'Kusoma Kwa Ufahamu',
       dataIndex: 'ufaulukubuni',
+      width: '.8%',
       key: 'ufaulukubuni',
     },
     {
       title: 'Jumla (Kusoma)',
       dataIndex: 'ufahamu',
+      width: '.9%',
       key: 'ufahamu',
     },
     {
       title: 'Kupigia Mistari Maneno Yaliyochanganyiwa',
       dataIndex: 'ufauluUfahamu',
+      width: '1%',
       key: 'ufauluUfahamu',
     },
     {
       title: 'Alama za uandishi',
       dataIndex: 'jumla',
+      width: '.8%',
       key: 'jumla',
-      ...getColumnSearchProps('jumla'),
+      // ...getColumnSearchProps('jumla'),
     },
     {
       title: 'Jumla (Kuandika)',
       dataIndex: 'ufauluJumla',
+      width: '.9%',
       key: 'ufauluJumla',
-      ...getColumnSearchProps('ufauluJumla'),
+      // ...getColumnSearchProps('ufauluJumla'),
     },
     {
       title: 'Utambuzi wa nambari',
       dataIndex: 'jumla',
+      width: '1%',
       key: 'jumla',
-      ...getColumnSearchProps('jumla'),
+      // ...getColumnSearchProps('jumla'),
     },
     {
       title: 'Kujumlisha ngazi ya I',
       dataIndex: 'ufauluJumla',
+      width: '1%',
       key: 'ufauluJumla',
-      ...getColumnSearchProps('ufauluJumla'),
+      // ...getColumnSearchProps('ufauluJumla'),
     },
     {
       title: 'Kujumlisha ngazi ya II',
       dataIndex: 'ufauluJumla',
+      width: '1%',
       key: 'ufauluJumla',
-      ...getColumnSearchProps('ufauluJumla'),
+      // ...getColumnSearchProps('ufauluJumla'),
     },
   ];
 
@@ -439,7 +455,13 @@ export default function RipotiYaShule() {
               {isLoadingCouncilReport && <p>Loading...</p>}
               {isErrorCouncilReport && <p>Error loading months.</p>}
               {!isLoadingCouncilReport && !isErrorCouncilReport && (
-                <Table columns={colsHalmashauri} dataSource={councilReport} />
+                <Table
+                  columns={colsHalmashauri}
+                  dataSource={councilReport}
+                  scroll={{
+                    x: 1600,
+                  }}
+                />
               )}
             </div>
             {/* /.col */}
