@@ -208,13 +208,13 @@ export default function RipotiYaShule() {
     },
     {
       title: 'Sauti za herufi	',
-      dataIndex: 'sauti',
-      key: 'sauti',
+      dataIndex: 'szh',
+      key: 'szh',
     },
     {
       title: 'Ubora wa Ufaulu	',
-      dataIndex: 'ufauluSauti',
-      key: 'ufauluSauti',
+      dataIndex: 'uaf',
+      key: 'uaf',
     },
     {
       title: 'Maneno ya kubuni',
@@ -228,8 +228,8 @@ export default function RipotiYaShule() {
     },
     {
       title: 'Kusoma Kwa Ufahamu',
-      dataIndex: 'ufahamu',
-      key: 'ufahamu',
+      dataIndex: 'uaf',
+      key: 'uaf',
     },
     {
       title: 'Ubora wa Ufaulu',

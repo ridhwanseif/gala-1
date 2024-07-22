@@ -506,7 +506,7 @@ export default function TaarifaYaMkoa() {
         </div>
 
         <h5 className='my-3'>Jedwali 2: Muhtasari wa Matokeo ya Upimaji Darasa la Pili Kimkoa</h5>
-        <div className="container-fluid">
+        {/* <div className="container-fluid">
           <div className="row">
             <div className="col-12">
               <Tabs
@@ -550,10 +550,8 @@ export default function TaarifaYaMkoa() {
                 ]}
               />
             </div>
-            {/* /.col */}
           </div>
-          {/* /.row */}
-        </div>
+        </div> */}
         {/* /.container-fluid */}
 
       </section>

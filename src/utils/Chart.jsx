@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Bar, Pie, Doughnut } from "react-chartjs-2";
 import './chart.css'
 import { useQuery } from "react-query";
-import { fetchRanking, fetchRankings, fetchRegionSubAverage } from "../api/chartAPI";
+import { fetchRanking, fetchRankings, fetchRankingWriting, fetchRegionSubAverage } from "../api/chartAPI";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -169,7 +169,7 @@ export function ChartBar1({ month, year }) {
 
 export function ChartBar2({ month, year }) {
   const { data: ranking, isLoading, isError }
-    = useQuery(['ranking', month, year], () => fetchRankings(month, year));
+    = useQuery(['ranking', month, year], () => fetchRankingWriting(month, year));
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
@@ -425,9 +425,9 @@ export function WastaniWaUfaulu({ year, month, council }) {
   };
 
   return (
-    <div>
+    <div className="dataScroll">
       {chartData ? (
-        <Bar className="barChart"
+        <Bar className="barChart dataScroll"
           data={chartData}
           options={options}
           height={2800}
@@ -484,9 +484,9 @@ export function UfauluWaKusoma({ year, month, council }) {
   };
 
   return (
-    <div>
+    <div className="dataScroll">
       {chartData ? (
-        <Bar className="barChart"
+        <Bar className="barChart dataScroll"
           data={chartData}
           options={options}
           height={2800}
@@ -497,71 +497,6 @@ export function UfauluWaKusoma({ year, month, council }) {
     </div>
   );
 }
-// export function UfauluWaKusoma({ year, month, council }) {
-//   const [chartData, setChartData] = useState(null);
-
-//   const { data: ufauluWaKusoma, isLoading: isLoadingKusoma, isError: isErrorKusoma } =
-//     useQuery(['ufauluWaKusoma', year, month, council], fetchUfauluWaKusoma, { enabled: !!council && !!year && !!month, });
-
-//   // console.log(ufauluWaShule)
-
-//   useEffect(() => {
-//     if (ufauluWaKusoma) {
-//       const labels = ufauluWaKusoma?.map(item => item?.shule);
-//       const wastani = ufauluWaKusoma?.map(item => item?.wastani);
-
-//       console.log(labels)
-
-//       setChartData({
-//         labels,
-//         datasets: [
-//           {
-//             label: 'Wastani',
-//             data: wastani,
-//             backgroundColor: 'rgba(75, 192, 192, 0.6)',
-//           },
-//         ],
-//       });
-//     }
-//   }, [ufauluWaKusoma]);
-
-//   const options = {
-//     responsive: true,
-//     indexAxis: 'y', // This option changes the chart to horizontal
-//     scales: {
-//       x: {
-//         title: {
-//           display: true,
-//           text: 'Asilimia',
-//         },
-//         beginAtZero: true,
-//       },
-//       y: {
-//         title: {
-//           display: true,
-//           text: 'Shule',
-//         },
-//       },
-//     },
-//   };
-
-//   return (
-//     <div>
-//       {isLoadingKusoma ? (
-//         <p>Loading...</p>
-//       ) : isErrorKusoma ? (
-//         <p>Error loading data</p>
-//       ) : (
-//         <Bar className="barChart"
-//           data={chartData}
-//           options={options}
-//           height={2800}
-//         />
-//       )}
-//     </div>
-//   );
-// }
-
 export function UfauluWaKuandika({ year, month, council }) {
   const [chartData, setChartData] = useState(null);
 
@@ -607,9 +542,9 @@ export function UfauluWaKuandika({ year, month, council }) {
   };
 
   return (
-    <div>
+    <div className="dataScroll">
       {chartData ? (
-        <Bar className="barChart"
+        <Bar className="barChart dataScroll"
           data={chartData}
           options={options}
           height={2800}
@@ -620,7 +555,6 @@ export function UfauluWaKuandika({ year, month, council }) {
     </div>
   );
 }
-
 export function UfauluWaKuhesabu({ year, month, council }) {
   const [chartData, setChartData] = useState(null);
 
@@ -666,9 +600,9 @@ export function UfauluWaKuhesabu({ year, month, council }) {
   };
 
   return (
-    <div>
+    <div className="dataScroll">
       {chartData ? (
-        <Bar className="barChart"
+        <Bar className="barChart dataScroll"
           data={chartData}
           options={options}
           height={2800}

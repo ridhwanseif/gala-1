@@ -12,12 +12,23 @@ export const fetchRegionSubAverage = async (month, year) => {
 
 export const fetchRanking = async (month, year) => {
     try {
-        const response = await axios.get(`/api/mtwara/report/council/ranking/${year}?mwezi=${month}`);
+        const response = await axios.get(`api/mtwara/report/council/ranking/reading/${year}?mwezi=${month}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching the data', error);
     }
 };
+
+export const fetchRankingWriting = async (month, year) => {
+    try {
+        const response = await axios.get(`api/mtwara/report/council/ranking/writing/${year}?mwezi=${month}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching the data', error);
+    }
+};
+
+// http://139.162.12.176:5050/api/mtwara/report/council/ranking/writing/2022?mwezi=Novemba
 
 
 export const fetchRankings = async (month, year) => {

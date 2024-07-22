@@ -161,7 +161,7 @@ export default function RipotiYaShule() {
 
         <div className="container-fluid">
           <div className="row">
-            <div className="col-12">
+            <div className="col-12 dataScroll">
               <Tabs
                 defaultActiveKey="1"
                 type="card"

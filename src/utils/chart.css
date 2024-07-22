@@ -111,6 +111,11 @@ Card
     margin-top: 3rem;
 }
 
+.dataScroll{
+    overflow: "auto";
+    scroll-behavior: "smooth";
+    height: 580;
+  }
 
 
 /* // Small devices (landscape phones, 576px and up) */
@@ -146,3 +151,5 @@ Card
 @media (min-width: 1400px) { 
   
  }
+
+
