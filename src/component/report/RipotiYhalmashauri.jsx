@@ -196,63 +196,71 @@ export default function RipotiYaShule() {
   const colsHalmashauri = [
     {
       title: 'No/Usajili',
-      dataIndex: 'sn',
-      width: '.6%',
-      key: 'sn',
+      dataIndex: 'shuleNo',
+      width: '.8%',
+      key: 'shuleNo',
       // ...getColumnSearchProps('sn'),
       fixed: 'left',
     },
     {
       title: 'Jina la shule',
-      dataIndex: 'jina',
-      key: 'jina',
-      width: '2.2%',
-      ...getColumnSearchProps('jina'),
+      dataIndex: 'shule',
+      key: 'shule',
+      width: '1.3%',
+      ...getColumnSearchProps('shule'),
       fixed: 'left',
-      sorter: true,
+      // sorter: true,
     },
     {
       title: 'Jina la Mwanafunzi',
-      dataIndex: 'jisia',
-      width: '1%',
-      key: 'jisia',
+      dataIndex: 'jina',
+      width: '2%',
+      key: 'jina',
+      fixed: 'left',
       // ...getColumnSearchProps('jisia'),
     },
     {
       title: 'Jinsia',
-      dataIndex: 'sauti',
-      width: '.7%',
-      key: 'sauti',
+      dataIndex: 'jinsia',
+      width: '.8%',
+      key: 'jinsia',
+      fixed: 'left',
     },
     {
       title: 'Sauti za herufi',
-      dataIndex: 'ufauluSauti',
+      dataIndex: 'szh',
       width: '.7%',
-      key: 'ufauluSauti',
+      key: 'szh',
     },
     {
       title: 'Maneno ya kubuni',
-      dataIndex: 'kubuni',
+      dataIndex: 'myk',
       width: '.8%',
-      key: 'kubuni',
+      key: 'myk',
     },
     {
       title: 'Kusoma Kwa Ufahamu',
-      dataIndex: 'ufaulukubuni',
+      dataIndex: 'kku',
       width: '.8%',
-      key: 'ufaulukubuni',
+      key: 'kku',
     },
     {
       title: 'Jumla (Kusoma)',
-      dataIndex: 'ufahamu',
+      dataIndex: 'kusT',
       width: '.9%',
-      key: 'ufahamu',
+      key: 'kusT',
+    },
+    {
+      title: 'Imla',
+      dataIndex: 'imla',
+      width: '.9%',
+      key: 'imla',
     },
     {
       title: 'Kupigia Mistari Maneno Yaliyochanganyiwa',
-      dataIndex: 'ufauluUfahamu',
+      dataIndex: 'hzm',
       width: '1%',
-      key: 'ufauluUfahamu',
+      key: 'hzm',
     },
     {
       title: 'Alama za uandishi',
@@ -260,6 +268,13 @@ export default function RipotiYaShule() {
       width: '.8%',
       key: 'jumla',
       // ...getColumnSearchProps('jumla'),
+    },
+    {
+      title: 'Kutambua vitu',
+      dataIndex: 'ufauluJumla',
+      width: '.9%',
+      key: 'ufauluJumla',
+      // ...getColumnSearchProps('ufauluJumla'),
     },
     {
       title: 'Jumla (Kuandika)',
@@ -284,6 +299,27 @@ export default function RipotiYaShule() {
     },
     {
       title: 'Kujumlisha ngazi ya II',
+      dataIndex: 'ufauluJumla',
+      width: '1%',
+      key: 'ufauluJumla',
+      // ...getColumnSearchProps('ufauluJumla'),
+    },
+    {
+      title: 'Kutoa ngazi ya I',
+      dataIndex: 'ufauluJumla',
+      width: '1%',
+      key: 'ufauluJumla',
+      // ...getColumnSearchProps('ufauluJumla'),
+    },
+    {
+      title: 'Kutoa ngazi ya II',
+      dataIndex: 'ufauluJumla',
+      width: '1%',
+      key: 'ufauluJumla',
+      // ...getColumnSearchProps('ufauluJumla'),
+    },
+    {
+      title: 'Nambari Inayokosekana',
       dataIndex: 'ufauluJumla',
       width: '1%',
       key: 'ufauluJumla',
@@ -444,7 +480,7 @@ export default function RipotiYaShule() {
           <div className="row">
             <div className='col-sm-12 mb-3'>
               <h4>Ujumla ya Wanafunzi</h4>
-              <Table columns={columns1} dataSource={data1} pagination={false} />
+              <Table className='custom-table' columns={columns1} dataSource={data1} pagination={false} />
             </div>
           </div>
         </div>
@@ -456,10 +492,11 @@ export default function RipotiYaShule() {
               {isErrorCouncilReport && <p>Error loading months.</p>}
               {!isLoadingCouncilReport && !isErrorCouncilReport && (
                 <Table
+                  className='custom-table'
                   columns={colsHalmashauri}
                   dataSource={councilReport}
                   scroll={{
-                    x: 1600,
+                    x: 2450,
                   }}
                 />
               )}

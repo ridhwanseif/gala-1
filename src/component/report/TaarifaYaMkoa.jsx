@@ -494,13 +494,21 @@ export default function TaarifaYaMkoa() {
       </div>
       {/* /.content-header */}
 
-      <section className="content">
+      <section className="content"
+        style={{
+          overflow: "auto",
+          scrollBehavior: "smooth",
+          height: 580
+        }}>
 
         <div className="container-fluid">
           <div className="row">
             <div className='col-sm-12 mb-3'>
               <h5 className='my-3'>Jedwali 1: Taarifa za watahiniwa waliosajiliwa na waliofanya upimaji wa darasa la pili kwa kila halmashauri</h5>
-              <Table columns={columns} dataSource={data1} />
+              <Table
+                className='custom-table'
+                columns={columns}
+                dataSource={data1} />
             </div>
           </div>
         </div>

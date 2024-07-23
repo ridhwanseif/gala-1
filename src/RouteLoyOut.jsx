@@ -9,6 +9,7 @@ import Shule from './component/report/Shule';
 import RipotiYhalmashauri from './component/report/RipotiYhalmashauri';
 import TaarifaYaMkoa from './component/report/TaarifaYaMkoa';
 import Takwimu from './component/report/Takwimu';
+import Test from './component/Test';
 
 export default function RouteLoyOut() {
     return (
@@ -25,8 +26,6 @@ export default function RouteLoyOut() {
     )
 }
 
-
-
 const LoyOut = () => {
 
     return (
@@ -38,6 +37,7 @@ const LoyOut = () => {
             <Route path='/ripotiHalmashauri' element={<RipotiYhalmashauri/>} />
             <Route path='/taarifaYaMkoa' element={<TaarifaYaMkoa/>} />
             <Route path='/takuwimu' element={<Takwimu/>} />
+            <Route path='/test' element={<Test/>} />
         </Routes>
     );
 }

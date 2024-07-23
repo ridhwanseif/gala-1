@@ -3,9 +3,10 @@ import { useQuery } from 'react-query';
 import { SearchOutlined } from '@ant-design/icons';
 import { fetchCouncil, fetchMonth, fetchYear } from '../../api/upimajiFilterAPI';
 import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
-import { Space, Table, Tag, Tabs, Input, Button } from 'antd';
+import { Space, Table, Tag, Tabs, Input, Button, Flex, Progress } from 'antd';
 import { ChartBar, RipotiYaShuleChart, UfauluWaKuandika, UfauluWaKuhesabu, UfauluWaKusoma, WastaniWaUfaulu } from '../../utils/Chart';
 import { fetchMaelezoYaShule } from '../../api/takwimuAPI';
+import { progressTowardsBenchMark } from './ReportFunctions';
 
 export default function RipotiYaShule() {
 
@@ -26,6 +27,12 @@ export default function RipotiYaShule() {
 
   // console.log(JSON.stringify(schoolReport, null, 2))
 
+  
+// Example marks value
+const marks = 243; // Replace this with your actual marks
+
+// Calculate the percentage
+const percentage = progressTowardsBenchMark(marks);
 
 
   const [size, setSize] = useState('small');
@@ -44,10 +51,24 @@ export default function RipotiYaShule() {
     },
     {
       title: 'Maendeleo (%)',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'wastani',
+      key: 'wastani',
+      render: (marks) => {
+        const percentage = progressTowardsBenchMark(marks);
+        return (
+          <Flex gap="small" vertical>
+            <Progress
+              percent={percentage}
+              percentPosition={{
+                align: 'center',
+                type: 'inner',
+              }}
+              size={[400, 20]}
+            />
+          </Flex>
+        );
+      },
     },
-
     {
       title: 'Wastani (Chini ya 300)',
       dataIndex: 'wastani',
@@ -55,15 +76,6 @@ export default function RipotiYaShule() {
     },
 
   ];
-  const data1 = [
-    {
-      key: '1',
-      name: '3',
-      age: 32,
-      address: '43',
-      tags: '23',
-    },
-  ]
 
 
   return (
@@ -216,7 +228,11 @@ export default function RipotiYaShule() {
                     label: 'Maendeleo wa Shule',
                     key: '5',
                     children: (
-                      <Table columns={columns1} dataSource={maelezoYaShule} />
+                      <Table
+                        className='custom-table'
+                        columns={columns1}
+                        dataSource={maelezoYaShule}
+                        rowKey="no" />
                     ),
                   },
                 ]}

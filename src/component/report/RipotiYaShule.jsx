@@ -6,6 +6,7 @@ import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
 import { fetchRipotiYaShule } from '../../api/ripoti';
 import { Space, Table, Tag, Tabs, Input, Button } from 'antd';
 import { RipotiYaShuleChart } from '../../utils/Chart';
+import { getComment100, getComment12, getComment16, getComment20, getComment24, getComment40, getComment8 } from './ReportFunctions';
 
 export default function RipotiYaShule() {
 
@@ -186,187 +187,283 @@ export default function RipotiYaShule() {
   });
 
 
-  const colsKusoma = [
+  const columns = [
     {
-      title: 'S/N',
+      title: 'SN',
       dataIndex: 'sn',
       key: 'sn',
-      // ...getColumnSearchProps('sn'),
+      fixed: 'left',
+      width: '2.3%',
+      render: (text, record, index) => index + 1,
     },
     {
-      title: 'Jina',
+      title: 'Jina La Mwanafunzi',
       dataIndex: 'jina',
       key: 'jina',
-      width: '18%',
+      fixed: 'left',
+      width: '12%',
       ...getColumnSearchProps('jina'),
+
     },
     {
-      title: 'jinsia',
+      title: 'Jinsia',
       dataIndex: 'jinsia',
       key: 'jinsia',
-      ...getColumnSearchProps('jinsia'),
+      fixed: 'left',
+      // sorter: true,
+      width: '4%',
     },
     {
-      title: 'Sauti za herufi	',
-      dataIndex: 'szh',
-      key: 'szh',
+      title: 'Umahiri wa Kusoma	',
+      fixed: 'left',
+      children: [
+        {
+          title: 'Sauti za herufi',
+          dataIndex: 'szh',
+          key: 'szh',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'szh',
+          key: 'szhv',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment40(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Maneno ya kubuni',
+          dataIndex: 'myk',
+          key: 'myk',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'myk',
+          key: 'mykv',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment40(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Kusoma Kwa Ufahamu',
+          dataIndex: 'kku',
+          key: 'kku',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'kku',
+          key: 'kkuv',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment20(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Jumla',
+          dataIndex: 'kusT',
+          key: 'kusT',
+          width: '3%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'kusT',
+          key: 'kusTv',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment100(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+      ],
     },
     {
-      title: 'Ubora wa Ufaulu	',
-      dataIndex: 'uaf',
-      key: 'uaf',
-    },
-    {
-      title: 'Maneno ya kubuni',
-      dataIndex: 'kubuni',
-      key: 'kubuni',
-    },
-    {
-      title: 'Ubora wa Ufaulu',
-      dataIndex: 'ufaulukubuni',
-      key: 'ufaulukubuni',
-    },
-    {
-      title: 'Kusoma Kwa Ufahamu',
-      dataIndex: 'uaf',
-      key: 'uaf',
-    },
-    {
-      title: 'Ubora wa Ufaulu',
-      dataIndex: 'ufauluUfahamu',
-      key: 'ufauluUfahamu',
-    },
-    {
-      title: 'Jumla',
-      dataIndex: 'jumla',
-      key: 'jumla',
-      ...getColumnSearchProps('jumla'),
-    },
-    {
-      title: 'Ubora wa Ufaulu',
-      dataIndex: 'ufauluJumla',
-      key: 'ufauluJumla',
-      ...getColumnSearchProps('ufauluJumla'),
-    },
-  ];
+      title: 'Umahiri wa Kuandika',
+      fixed: 'left',
+      children: [
+        {
+          title: 'Imla',
+          dataIndex: 'imla',
+          key: 'imla',
+          width: '3%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'imla',
+          key: 'imlav',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment40(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Kupigia Mistari Maneno Yaliyochanganyiwa',
+          dataIndex: 'hzm',
+          key: 'hzm',
+          width: '6%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'hzm',
+          key: 'hzmv',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment20(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Alama za uandishi',
+          dataIndex: 'uaf',
+          key: 'uaf',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'uaf',
+          key: 'uafv',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment16(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Kutambua Majina Ya Vitu',
+          dataIndex: 'picha',
+          key: 'picha',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'picha',
+          key: 'pichav',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment24(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Jumla',
+          dataIndex: 'kuaT',
+          key: 'kuaT',
+          width: '3%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'kuaT',
+          key: 'kuaTv',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment100(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
 
-  const colsKuandika = [
-    {
-      title: 'S/N',
-      dataIndex: 'sn',
-      key: 'sn',
-      // ...getColumnSearchProps('sn'),
+      ],
     },
     {
-      title: 'Jina',
-      dataIndex: 'jina',
-      key: 'jina',
-      width: '18%',
-      ...getColumnSearchProps('jina'),
-    },
-    {
-      title: 'Jisia',
-      dataIndex: 'jisia',
-      key: 'jisia',
-      ...getColumnSearchProps('jisia'),
-    },
-    {
-      title: 'Imla',
-      dataIndex: 'sauti',
-      key: 'sauti',
-    },
-    {
-      title: 'Ubora wa Ufaulu',
-      dataIndex: 'ufauluSauti',
-      key: 'ufauluSauti',
-    },
-    {
-      title: 'Ubora wa Imla',
-      dataIndex: 'sauti',
-      key: 'sauti',
-    },
-    {
-      title: 'Ubora wa Ufaulu	',
-      dataIndex: 'ufauluSauti',
-      key: 'ufauluSauti',
-    },
-    {
-      title: 'Kupisijio Mistari Maeneo Yaliyochanganyika',
-      dataIndex: 'sauti',
-      key: 'sauti',
-    },
-    {
-      title: 'Alama za uandishi',
-      dataIndex: 'ufauluSauti',
-      key: 'ufauluSauti',
-    },
-    {
-      title: 'Ubora wa Ufuafu',
-      dataIndex: 'sauti',
-      key: 'sauti',
-    },
-    {
-      title: 'Kutambua Majina Ya Vitu',
-      dataIndex: 'ufauluSauti',
-      key: 'ufauluSauti',
-    },
-  ];
-
-  const colskuhesabu = [
-    {
-      title: 'S/N',
-      dataIndex: 'sn',
-      key: 'sn',
-      // ...getColumnSearchProps('sn'),
-    },
-    {
-      title: 'Jina',
-      dataIndex: 'jina',
-      key: 'jina',
-      width: '18%',
-      ...getColumnSearchProps('jina'),
-    },
-    {
-      title: 'Jisia',
-      dataIndex: 'jisia',
-      key: 'jisia',
-      ...getColumnSearchProps('jisia'),
-    },
-    {
-      title: 'Ubora wa Ufaulu',
-      dataIndex: 'ufauluJumla',
-      key: 'ufauluJumla',
-      ...getColumnSearchProps('ufauluJumla'),
-    },
-    {
-      title: 'Jumla',
-      dataIndex: 'jumla',
-      key: 'jumla',
-      ...getColumnSearchProps('jumla'),
-    },
-    {
-      title: 'Utambuzi wa Namba',
-      dataIndex: 'ufauluJumla',
-      key: 'ufauluJumla',
-      ...getColumnSearchProps('ufauluJumla'),
-    },
-    {
-      title: 'Ubora wa Ufaulu',
-      dataIndex: 'ufauluJumla',
-      key: 'ufauluJumla',
-      ...getColumnSearchProps('ufauluJumla'),
-    },
-    {
-      title: 'Kujumulisha na kutoa',
-      dataIndex: 'ufauluJumla',
-      key: 'ufauluJumla',
-      ...getColumnSearchProps('ufauluJumla'),
-    },
-    {
-      title: 'Ubora wa Ufuafu',
-      dataIndex: 'ufauluJumla',
-      key: 'ufauluJumla',
-      ...getColumnSearchProps('ufauluJumla'),
+      title: 'Umahiri wa Kuhesabu',
+      children: [
+        {
+          title: 'Utambuzi wa Namba',
+          dataIndex: 'uta',
+          key: 'uta',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'uta',
+          key: 'utav',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment20(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Kujumlisha Ngazi ya I',
+          dataIndex: 'jum1',
+          key: 'jum1',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'jum1',
+          key: 'jum1v',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment8(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Kujumlisha Ngazi ya II',
+          dataIndex: 'jum2',
+          key: 'jum2',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'jum2',
+          key: 'jum2v',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment12(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Kutoa Ngazi ya I',
+          dataIndex: 'kut1',
+          key: 'kut1',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'kut1',
+          key: 'kut1v',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment8(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+      ],
     },
   ];
 
@@ -468,12 +565,31 @@ export default function RipotiYaShule() {
           <div className="row">
             <div className='col-sm-12 mb-3'>
               <h4>Ujumla ya Wanafunzi</h4>
-              <Table columns={columns1} dataSource={data1} pagination={false} />
+
+              <Table
+                className='custom-table'
+                columns={columns1}
+                dataSource={data1}
+                pagination={false} />
             </div>
           </div>
         </div>
 
         <div className="container-fluid">
+          <div className="row">
+            <div className="col-12">
+              <Table
+                className='custom-table'
+                columns={columns}
+                dataSource={schoolReport}
+                scroll={{
+                  x: 3000,
+                }} />
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="container-fluid">
           <div className="row">
             <div className="col-12">
               <Tabs
@@ -517,11 +633,8 @@ export default function RipotiYaShule() {
                 ]}
               />
             </div>
-            {/* /.col */}
           </div>
-          {/* /.row */}
-        </div>
-        {/* /.container-fluid */}
+        </div> */}
 
         <div className="container-fluid">
           <div className="row">

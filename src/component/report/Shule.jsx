@@ -185,7 +185,11 @@ export default function Shule() {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 mt-4">
-                <Table columns={columns} dataSource={schools} />
+                <Table 
+                columns={columns} 
+                dataSource={schools}
+                className='custom-table'
+                />
               </div>
               {/* /.col */}
             </div>

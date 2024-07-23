@@ -21,7 +21,6 @@ function App() {
         <Route path="*" element={<RouteLoyOut />} />
         {/* </Route> */}
       </Routes>
-      {/* <Dashboard /> */}
 
     </>
   )

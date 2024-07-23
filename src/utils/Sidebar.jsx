@@ -101,6 +101,14 @@ export default function Sidebar() {
                                     </p>
                                 </Link>
                             </li>
+                            <li className="nav-item">
+                                <Link to='/test' className={`nav-link ${location.pathname === '/test' ? 'active' : ''}`}>
+                                    <i className="nav-icon fas fa-book" />
+                                    <p>
+                                        Test
+                                    </p>
+                                </Link>
+                            </li>
                         </ul>
                     </nav>
                     {/* /.sidebar-menu */}

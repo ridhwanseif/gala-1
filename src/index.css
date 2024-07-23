@@ -1,5 +1,21 @@
-.dataScroll{
-    overflow: "auto";
-    scroll-behavior: "smooth";
-    height: 580;
-  }
+.wrapper {
+  height: 88.5vh;
+  /* Set the wrapper to full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  flex: 1;
+  /* Allow the content-wrapper to grow and fill the available space */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+  padding: 20px;
+  /* Optional: Add some padding for better visuals */
+  background-color: #f4f6f9;
+  /* Optional: Match AdminLTE content background */
+}
+
+.custom-table .ant-table {
+  font-size: 13.7px; /* Set the desired font size */
+}
