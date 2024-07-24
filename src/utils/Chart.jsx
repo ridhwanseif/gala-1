@@ -63,12 +63,6 @@ export function ChartBar({ month, year }) {
 
   const options = {
     responsive: true,
-    // plugins: {
-    //   title: {
-    //     display: true,
-    //     text: 'Wilaya',
-    //   },
-    // },
     scales: {
       x: {
         title: {
@@ -127,13 +121,6 @@ export function ChartBar1({ month, year }) {
 
   const options = {
     responsive: true,
-    //  indexAxis: 'y',
-    // plugins: {
-    //   title: {
-    //     display: true,
-    //     text: 'Wilaya',
-    //   },
-    // },
     scales: {
       x: {
         stacked: true,
@@ -328,12 +315,6 @@ export function RipotiYaShuleChart({ month, year }) {
 
   const options = {
     responsive: true,
-    // plugins: {
-    //   title: {
-    //     display: true,
-    //     text: 'Wilaya',
-    //   },
-    // },
     scales: {
       x: {
         title: {
@@ -430,7 +411,7 @@ export function WastaniWaUfaulu({ year, month, council }) {
         <Bar className="barChart dataScroll"
           data={chartData}
           options={options}
-          height={2800}
+          height={1200}
         />
       ) : (
         <p>Loading...</p>

@@ -1,30 +1,376 @@
 import React from 'react';
-import { Flex, Progress } from 'antd';
-import { progressTowardsBenchMark } from './report/ReportFunctions';
+import { Table } from 'antd';
+import { szhPassCount } from './report/ReportFunctions';
 
-// // Function to calculate progress towards benchmark
-// export const progressTowardsBenchMark = (marks) => {
-//   const progress = (marks / 244) * 100;
-//   return progress.toFixed(2);
-// };
+const data = [23,54,66,67,78]
+const dataSource = [
+  {
+    area: 'Umahiri wa Kusoma'
+  },
+  {
+    key: '1',
+    area: 'Sauti za Herufi',
+    description: 'Wanafunzi walioeza kutaja sauti za herufi',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    key: '2',
+    area: 'Maneno ya kubuni',
+    description: 'Wanafunzi walioeza kusoma maneno ya kubuni',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    key: '3',
+    area: 'Kusoma kwa ufahamu',
+    description: 'Wanafunzi walioeza kujibu kwa usahihi yanayotokana na kusoma kwa ufahamu',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    area: 'Umahiri wa Kuandika'
+  },
+  {
+    key: '1',
+    area: 'Imla',
+    description: 'Wanafunzi walioweza kuandika kwa usahihi kwenye sentensi za Imla',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    key: '2',
+    area: 'Kupigia mstari maneno yaliyoandikwa',
+    description: 'Wwanafunzi walioweza kupigia mstari maneno yenye herufi kubwa au ndogo',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    key: '3',
+    area: 'Alama za Uandishi',
+    description: 'Wanafunzi walioweza kuweka kwa usahihi alama za uandishi',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    key: '4',
+    area: 'Kutambua majina ya vitu',
+    description: 'wanafunzi walioweza kuandika majina ya vitu kwa usahihi',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    area: 'Umahiri wa Kuhesabu'
+  },
+  {
+    key: '1',
+    area: 'Utambuzi wa namba',
+    description: 'Wanafunzi walioweza kutambua namba kwa usahihi',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    key: '2',
+    area: 'Namba Inayokosekana',
+    description: 'Wanafunzi walioweza kujaza namba zinazokosekana kwa usahihi',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    key: '3',
+    area: 'Mafumbo',
+    description: 'Wanafunzi walioweza kufumbua mafumbo kwa usahihi',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    area: 'Matendo katika namba'
+  },
+  {
+    key: '1',
+    area: 'Kujumlisha Ngazi ya I',
+    description: 'Wanafunzi walioweza Kujumlisha namba ngazi ya I kwa usahihi',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    key: '2',
+    area: 'Kujumlisha Ngazi ya II',
+    description: 'Wanafunzi walioweza Kujumlisha namba ngazi ya II kwa usahihi',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    key: '3',
+    area: 'Kutoa Ngazi ya I',
+    description: 'Wanafunzi walioweza Kutoa namba ngazi ya I kwa usahihi',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+  {
+    key: '3',
+    area: 'Kutoa Ngazi ya II',
+    description: 'Wanafunzi walioweza Kutoa namba ngazi ya II kwa usahihi',
+    vizuriSanaWav: szhPassCount(data, "Mvulana", "VS"),
+    vizuriSanaWas: szhPassCount(data, "Msichana", "VS"),
+    vizuriSanaJum: szhPassCount(data, "Mvulana", "VS") + szhPassCount(data, "Msichana", "VS"),
+    vizuriWav: szhPassCount(data, "Mvulana", "VZ"),
+    vizuriWas: szhPassCount(data, "Msichana", "VZ"),
+    vizuriJum: szhPassCount(data, "Mvulana", "VZ") + szhPassCount(data, "Msichana", "VZ"),
+    wastaniWav: szhPassCount(data, "Mvulana", "WS"),
+    wastaniWas: szhPassCount(data, "Msichana", "WS"),
+    wastaniJum: szhPassCount(data, "Mvulana", "WS") + szhPassCount(data, "Msichana", "Wastani/Inarishisha"),
+    dhaifuWav: szhPassCount(data, "Mvulana", "DH"),
+    dhaifuWas: szhPassCount(data, "Msichana", "DH"),
+    dhaifuJum: szhPassCount(data, "Mvulana", "DH") + szhPassCount(data, "Msichana", "DH"),
+    hajuiWav: szhPassCount(data, "Mvulana", "HJ"),
+    hajuiWas: szhPassCount(data, "Msichana", "HJ"),
+    hajuiJum: szhPassCount(data, "Mvulana", "HJ") + szhPassCount(data, "Msichana", "HJ"),
+  },
+];
 
-export default function Test() {
-  // Example marks value
-  const marks = 243; // Replace this with your actual marks
+const columns = [
+  {
+    title: 'sn',
+    dataIndex: 'key',
+    key: 'key',
+  },
+  {
+    title: 'Eneo Linalopimwa',
+    dataIndex: 'area',
+    key: 'area',
+  },
+  {
+    title: 'Kiwango cha Ufanisi/ Ufaulu',
+    dataIndex: 'description',
+    key: 'description',
+  },
+  {
+    title: 'Ufaulu',
+    children: [
+      {
+        title: 'Vizuri Sana',
+        children: [
+          {
+            title: 'Wav',
+            dataIndex: 'vizuriSanaWav', key: 'vizuriSanaWav'
+          },
+          { title: 'Was', dataIndex: 'vizuriSanaWas', key: 'vizuriSanaWas' },
+          { title: 'Jum', dataIndex: 'vizuriSanaJum', key: 'vizuriSanaJum' },
+        ],
+      },
+      {
+        title: 'Vizuri',
+        children: [
+          { title: 'Wav', dataIndex: 'vizuriWav', key: 'vizuriWav' },
+          { title: 'Was', dataIndex: 'vizuriWas', key: 'vizuriWas' },
+          { title: 'Jum', dataIndex: 'vizuriJum', key: 'vizuriJum' },
+        ],
+      },
+      {
+        title: 'Wastani',
+        children: [
+          { title: 'Wav', dataIndex: 'wastaniWav', key: 'wastaniWav' },
+          { title: 'Was', dataIndex: 'wastaniWas', key: 'wastaniWas' },
+          { title: 'Jum', dataIndex: 'wastaniJum', key: 'wastaniJum' },
+        ],
+      },
+      {
+        title: 'Dhaifu',
+        children: [
+          { title: 'Wav', dataIndex: 'dhaifuWav', key: 'dhaifuWav' },
+          { title: 'Was', dataIndex: 'dhaifuWas', key: 'dhaifuWas' },
+          { title: 'Jum', dataIndex: 'dhaifuJum', key: 'dhaifuJum' },
+        ],
+      },
+      {
+        title: 'Hajui',
+        children: [
+          { title: 'Wav', dataIndex: 'hajuiWav', key: 'hajuiWav' },
+          { title: 'Was', dataIndex: 'hajuiWas', key: 'hajuiWas' },
+          { title: 'Jum', dataIndex: 'hajuiJum', key: 'hajuiJum' },
+        ],
+      },
+    ],
+  },
+];
 
-  // Calculate the percentage
-  const percentage = progressTowardsBenchMark(marks);
+const App = () => (
+  <Table
+    dataSource={dataSource}
+    columns={columns}
+    pagination={false}
+    className='custom-table'
+  />
+);
 
-  return (
-    <Flex gap="small" vertical>
-      <Progress
-        percent={percentage}
-        percentPosition={{
-          align: 'center',
-          type: 'inner',
-        }}
-        size={[400, 20]}
-      />
-    </Flex>
-  );
-}
+export default App;
