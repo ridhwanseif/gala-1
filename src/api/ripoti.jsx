@@ -1,9 +1,8 @@
 import axios from './axios';
 
 
-export const fetchRipotiYaShule = async ({queryKey}) => {
-    const [_, month, year, schoolNo] = queryKey
-    // console.log('qqq', queryKey)
+export const fetchRipotiYaShule = async ({ queryKey }) => {
+  const [_, month, year, schoolNo] = queryKey
   const response = await axios.get(`api/mtwara/report/school/report/filter/${year}?shuleNo=${schoolNo}&mwezi=${month}`);
   return response.data;
 };
