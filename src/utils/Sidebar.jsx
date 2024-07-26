@@ -30,8 +30,8 @@ export default function Sidebar() {
             <aside className="main-sidebar sidebar-dark-primary elevation-4">
                 {/* Brand Logo */}
                 <a href="index3.html" className="brand-link">
-                    <img src="dist/img/AdminLTELogo.png" alt="Logo" className="brand-image img-circle elevation-3" style={{ opacity: '.8' }} />
-                    <span className="brand-text font-weight-light">GALA - MTWARA</span>
+                    <img src="dist/img/galamticon.png" alt="Logo" className="brand-image img-circle elevation-3" style={{ opacity: '.8' }} />
+                    <span className="brand-text font-weight-light">GALA MTWARA</span>
                 </a>
                 {/* Sidebar */}
                 <div className="sidebar">
@@ -101,14 +101,14 @@ export default function Sidebar() {
                                     </p>
                                 </Link>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <Link to='/test' className={`nav-link ${location.pathname === '/test' ? 'active' : ''}`}>
                                     <i className="nav-icon fas fa-book" />
                                     <p>
                                         Test
                                     </p>
                                 </Link>
-                            </li>
+                            </li> */}
                         </ul>
                     </nav>
                     {/* /.sidebar-menu */}

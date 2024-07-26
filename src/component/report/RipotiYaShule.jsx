@@ -561,7 +561,7 @@ export default function RipotiYaShule() {
 
       <section className="content">
 
-        <div className="container-fluid">
+        {/* <div className="container-fluid">
           <div className="row">
             <div className='col-sm-12 mb-3'>
               <h4>Ujumla ya Wanafunzi</h4>
@@ -573,7 +573,7 @@ export default function RipotiYaShule() {
                 pagination={false} />
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="container-fluid">
           <div className="row">

@@ -96,10 +96,9 @@ export default function Dashboard() {
 
       {/* Main content */}
       <section className="content">
-        <div className="container-fluid">
+        {/* <div className="container-fluid">
           <div className="row">
             <div className="col-lg-3 col-6">
-              {/* small box */}
               <div className="small-box bg-info">
                 <div className="inner">
                   <h3>{schoolCount}</h3>
@@ -111,9 +110,7 @@ export default function Dashboard() {
                 <a href="#" className="small-box-footer">Maelezo <i className="fas fa-arrow-circle-right" /></a>
               </div>
             </div>
-            {/* ./col */}
             <div className="col-lg-3 col-6">
-              {/* small box */}
               <div className="small-box bg-success">
                 <div className="inner">
                   <h3>{studentCount}</h3>
@@ -125,9 +122,7 @@ export default function Dashboard() {
                 <a href="#" className="small-box-footer">Maelezo <i className="fas fa-arrow-circle-right" /></a>
               </div>
             </div>
-            {/* ./col */}
             <div className="col-lg-3 col-6">
-              {/* small box */}
               <div className="small-box bg-warning">
                 <div className="inner">
                   <h3>44</h3>
@@ -139,9 +134,7 @@ export default function Dashboard() {
                 <a href="#" className="small-box-footer">Maelezo <i className="fas fa-arrow-circle-right" /></a>
               </div>
             </div>
-            {/* ./col */}
             <div className="col-lg-3 col-6">
-              {/* small box */}
               <div className="small-box bg-danger">
                 <div className="inner">
                   <h3>65</h3>
@@ -153,9 +146,8 @@ export default function Dashboard() {
                 <a href="#" className="small-box-footer">Maelezo <i className="fas fa-arrow-circle-right" /></a>
               </div>
             </div>
-            {/* ./col */}
           </div>
-        </div>
+        </div> */}
         <div className="container-fluid">
           <div className="row">
             <div className="col-lg-6 col-6">

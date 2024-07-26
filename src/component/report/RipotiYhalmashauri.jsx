@@ -476,14 +476,14 @@ export default function RipotiYaShule() {
 
       <section className="content">
 
-        <div className="container-fluid">
+        {/* <div className="container-fluid">
           <div className="row">
             <div className='col-sm-12 mb-3'>
               <h4>Ujumla ya Wanafunzi</h4>
               <Table className='custom-table' columns={columns1} dataSource={data1} pagination={false} />
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="container-fluid">
           <div className="row">
