@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useMutation, useQuery } from 'react-query';
 import { fetchCouncil, fetchMonth, fetchYear } from '../../api/upimajiFilterAPI';
-import { ChartBar, ChartBar1, ChartBar2 } from '../../utils/Chart';
+import { ChartBar, ChartBar1, ChartBar2, ChartBar3, WastaniWaUfaulu } from '../../utils/Chart';
 import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
 
 export default function Dashboard() {
@@ -180,9 +180,10 @@ export default function Dashboard() {
             {/* ./col */}
             <div className="col-lg-6 col-6">
               {/* small box */}
-              <ChartBar1
+              <ChartBar3
                 month={month}
                 year={year}
+                council='MASASI DC' 
               />
             </div>
             {/* ./col */}

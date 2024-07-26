@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Bar, Pie, Doughnut } from "react-chartjs-2";
 import './chart.css'
 import { useQuery } from "react-query";
-import { fetchRanking, fetchRankings, fetchRankingWriting, fetchRegionSubAverage } from "../api/chartAPI";
+import { fetchMath, fetchRanking, fetchRankingWriting, fetchRegionSubAverage } from "../api/chartAPI";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -133,7 +133,7 @@ export function ChartBar1({ month, year }) {
         stacked: true,
         title: {
           display: true,
-          text: 'Asilimia',
+          text: 'Asilimia ya kusoma',
         },
       },
     },
@@ -168,8 +168,8 @@ export function ChartBar2({ month, year }) {
     labels,
     datasets: [
       {
-        label: 'Average Ranking',
-        backgroundColor: 'rgba(75,192,192,0.4)', // You can customize the color
+        label: 'wilaya',
+        backgroundColor: 'rgba(75,92,192,0.4)', // You can customize the color
         data: dataValues,
       },
     ],
@@ -187,7 +187,7 @@ export function ChartBar2({ month, year }) {
       y: {
         title: {
           display: true,
-          text: 'Average Ranking',
+          text: 'Asilimia ya Kuandika',
         },
         beginAtZero: true,
       },
@@ -201,80 +201,54 @@ export function ChartBar2({ month, year }) {
   );
 }
 
-export function ChartPie() {
-  const data = {
+export function ChartBar3({ month, year }) {
+  const { data: ranking, isLoading, isError }
+    = useQuery(['ranking', month, year], () => fetchMath(month, year));
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading data</div>;
+
+  const labels = ranking?.map(item => item.wilaya);
+  const dataValues = ranking?.map(item => item.wastani);
+
+  const data2 = {
+    labels,
     datasets: [
       {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          "rgba(255, 99, 132)",
-          "rgba(54, 162, 235)",
-          "rgba(255, 206, 86)",
-          "rgba(75, 192, 192)",
-          "rgba(153, 102, 255)",
-          "rgba(255, 159, 64)",
-        ],
-        borderWidth: 1,
+        label: 'wilaya',
+        backgroundColor: 'rgba(75,192,102,0.4)', // You can customize the color
+        data: dataValues,
       },
     ],
   };
 
-  const options = {
+  const options2 = {
     responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Wilaya',
+        },
       },
-      tooltip: {
-        enabled: true,
+      y: {
+        title: {
+          display: true,
+          text: 'Asilimia ya Kuhesabu',
+        },
+        beginAtZero: true,
       },
     },
   };
+
   return (
-    <div className="card-chart">
-      <Pie className="chart" data={data} options={options} />
+    <div>
+      <Bar data={data2} options={options2} />
     </div>
   );
 }
 
-export function ChartPie1() {
-  const data = {
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132)',
-          'rgba(54, 162, 235)',
-          'rgba(255, 206, 86)',
-          'rgba(75, 192, 192)',
-          'rgba(153, 102, 255)',
-          'rgba(255, 159, 64)',
-        ],
 
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      tooltip: {
-        enabled: true,
-      },
-    },
-  };
-  return (
-    <div className="card-chart">
-      <Doughnut className="chart" data={data} options={options} />
-    </div>
-  );
-}
 // end of dashbosrd chart
 
 // report chart
