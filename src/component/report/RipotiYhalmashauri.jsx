@@ -6,6 +6,7 @@ import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
 import { fetchReportHalimashauri, fetchRipotiYaShule } from '../../api/ripoti';
 import { Space, Table, Input, Button, Select } from 'antd';
 import { RipotiYaShuleChart } from '../../utils/Chart';
+import { boyCount, dhaifuCount, girlCount, hajuiCount, vizuriCount, vizuriSanaCount, wastaniCount } from './ReportFunctions';
 
 export default function RipotiYaShule() {
 
@@ -31,53 +32,96 @@ export default function RipotiYaShule() {
 
 
   // console.log(councilReport)
-  console.log(JSON.stringify(councilReport, null, 2))
+  // console.log(JSON.stringify(councilReport, null, 2))
 
   const columns1 = [
     {
       title: 'Wavulana',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'wav',
+      key: 'wav',
     },
     {
       title: 'Wasichana',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'was',
+      key: 'was',
     },
     {
       title: 'Jumla',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'jum',
+      key: 'jum',
     },
 
     {
-      title: 'Vizuri',
-      dataIndex: 'address',
-      key: 'action',
+      title: 'Vizuri sana (VS)',
+      dataIndex: 'viz',
+      key: 'viz',
     },
     {
-      title: 'Wastani',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Vizuri(VZ)',
+      dataIndex: 'wast',
+      key: 'wast',
     },
     {
-      title: 'Hafifu',
-      dataIndex: 'address',
-      key: 'action',
+      title: 'Wastani(WS)',
+      dataIndex: 'haf',
+      key: 'haf',
     },
     {
-      title: 'Hafifu Zaidi',
-      dataIndex: 'address',
-      key: 'action',
+      title: 'Hafifu(H)',
+      dataIndex: 'hafz',
+      key: 'hafz',
+    },
+    {
+      title: 'Hafifu Zaidi(HZ)',
+      dataIndex: 'hafz',
+      key: 'hafz',
     },
   ];
+
+  const transformedData = councilReport ? councilReport.map(report => ({
+    id: report.id,
+    mkoa: report.mkoa,
+    wilaya: report.wilaya,
+    kata: report.kata,
+    shule: report.shule,
+    shuleNo: report.shuleNo,
+    jina: report.jina,
+    usajiliNo: report.usajiliNo,
+    jinsia: report.jinsia,
+    mwezi: report.mwezi,
+    mwaka: report.mwaka,
+    kku: report.kku,
+    myk: report.myk,
+    szh: report.szh,
+    imla: report.imla,
+    uaf: report.uaf,
+    picha: report.picha,
+    hzm: report.hzm,
+    uta: report.uta,
+    maf: report.maf,
+    jum1: report.jum1,
+    jum2: report.jum2,
+    kut1: report.kut1,
+    kut2: report.kut2,
+    nz: report.nz,
+    kusT: report.kusT,
+    kuaT: report.kuaT,
+    hesT: report.hesT,
+    jumla: report.jumla
+  })) : [];
+
+
   const data1 = [
     {
       key: '1',
-      name: '3',
-      age: 32,
-      address: '43',
-      tags: '23',
+      wav: boyCount(transformedData),
+      was: girlCount(transformedData),
+      jum: boyCount(transformedData) + girlCount(transformedData),
+      viz: vizuriSanaCount(transformedData),
+      wast: vizuriCount(transformedData),
+      haf: wastaniCount(transformedData),
+      hafz: dhaifuCount(transformedData),
+      hafz: hajuiCount(transformedData),
     },
   ]
 
@@ -476,38 +520,47 @@ export default function RipotiYaShule() {
 
       <section className="content">
 
-        {/* <div className="container-fluid">
-          <div className="row">
-            <div className='col-sm-12 mb-3'>
-              <h4>Ujumla ya Wanafunzi</h4>
-              <Table className='custom-table' columns={columns1} dataSource={data1} pagination={false} />
+        {isLoadingCouncilReport && <p>Loading...</p>}
+        {isErrorCouncilReport && <p>Error loading months.</p>}
+        {!isLoadingCouncilReport && !isErrorCouncilReport && (
+          <>
+            <div className="container-fluid">
+              <div className="row">
+                <div className='col-sm-12 mb-3'>
+                  <h4>Ujumla ya Wanafunzi</h4>
+                  <Table className='custom-table'
+                    columns={columns1}
+                    dataSource={data1}
+                    pagination={false} />
+
+                </div>
+              </div>
             </div>
-          </div>
-        </div> */}
 
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-sm-12">
-              {isLoadingCouncilReport && <p>Loading...</p>}
-              {isErrorCouncilReport && <p>Error loading months.</p>}
-              {!isLoadingCouncilReport && !isErrorCouncilReport && (
-                <Table
-                  className='custom-table'
-                  columns={colsHalmashauri}
-                  dataSource={councilReport}
-                  scroll={{
-                    x: 2450,
-                  }}
-                />
-              )}
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-sm-12">
+                  {isLoadingCouncilReport && <p></p>}
+                  {isErrorCouncilReport && <p>Error loading months.</p>}
+                  {!isLoadingCouncilReport && !isErrorCouncilReport && (
+                    <Table
+                      className='custom-table'
+                      columns={colsHalmashauri}
+                      dataSource={councilReport}
+                      scroll={{
+                        x: 2450,
+                      }}
+                    />
+                  )}
+                </div>
+                {/* /.col */}
+              </div>
+              {/* /.row */}
             </div>
-            {/* /.col */}
-          </div>
-          {/* /.row */}
-        </div>
-        {/* /.container-fluid */}
+            {/* /.container-fluid */}
 
-
+          </>
+        )}
 
       </section>
 

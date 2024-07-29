@@ -157,7 +157,7 @@ export default function Shule() {
   ];
 
   if (isLoadingSchool) {
-    return <Spin tip="Loading..." />;
+    return <Spin className='d-flex-center' tip="Loading..." />;
   }
 
   if (isErrorSchool) {
