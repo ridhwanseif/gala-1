@@ -1016,14 +1016,18 @@ export default function RipotiYaShule() {
                       <select
                         className="form-control"
                         onChange={(e) => {
-                          setSchoolNo(e.target.value)
-                          setSchool()
+                          const selectedSchool = schools.find(y => y.school_reg_number === e.target.value);
+                          setSchoolNo(e.target.value);
+                          setSchool(selectedSchool ? selectedSchool.school_name : '');
                         }}
+                        defaultValue=""
                       >
-                        <option selected="selected" >--Chagua--</option>
-                        {schools?.map((y) => {
-                          <option key={y.id} value={y.school_reg_number}>{y.school_name}</option>
-                        })}
+                        <option value="" disabled>--Chagua--</option>
+                        {schools?.map((y) => (
+                          <option key={y.id} value={y.school_reg_number}>
+                            {y.school_name}
+                          </option>
+                        ))}
                       </select>
                     )}
                   </div>
@@ -1094,13 +1098,14 @@ export default function RipotiYaShule() {
             <div className="container-fluid">
               <div className='row my-3'>
                 <div className='col-10'>
-                  <h3>
-                    Ripoti ya shule ya 
-                  </h3>
+                  <h4 className='text-center'>
+                    Ripoti ya shule ya {school} - {schoolNo}
+                  </h4>
                 </div>
                 <div className='col-2'>
                   <Button type="primary">chapisha PDF </Button>
                 </div>
+                <hr/>
               </div>
               <div className="row">
                 <div className='col-sm-12 mb-3'>
