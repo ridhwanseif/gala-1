@@ -15,42 +15,39 @@ export default function TaarifaYaMkoa() {
   const [month, setMonth] = useState();
   const [school, setSchool] = useState();
   const [schoolNo, setSchoolNo] = useState();
-  // const [girlsPassed, setGirlsPassed] = useState([])
-  // const [boysPassed, setBoysPassed] = useState([])
-  // const [average, setAverage] = useState([])
-
-
 
 
   const { data: boysPassedData, isLoading: isLoadingBoysPassed, isError: isErrorBoysPassed } = useQuery(
     ['boysPassedData', month, year], fetchBoysPassed, { enable: !!month && !!year })
 
-  console.log(JSON.stringify(boysPassedData, null, 2))
-    
-  // const { data: girlsPassedData, isLoading: isLoadingGirlsPassed, isError: isErrorGirlsPassed } = useQuery(
-  //   ['girlsPassedData', month, year], fetchGirlsPassed, { enable: !!month && !!year }
-  // )
-  // const { data: averageData, isLoading: isLoadingAverage, isError: isErrorAverage } = useQuery(
-  //   ['averageData', month, year], fetchAverage, { enable: !!month && !!year }
-  // )
+  // console.log(JSON.stringify(boysPassedData, null, 2))
+
+  const { data: girlsPassedData, isLoading: isLoadingGirlsPassed, isError: isErrorGirlsPassed } = useQuery(
+    ['girlsPassedData', month, year], fetchGirlsPassed, { enable: !!month && !!year }
+  )
+  const { data: averageData, isLoading: isLoadingAverage, isError: isErrorAverage } = useQuery(
+    ['averageData', month, year], fetchAverage, { enable: !!month && !!year }
+  )
 
   const getValueByHalmashauri = (array, key) => {
-    const { wastani } = array.find((obj) => obj.wilaya === key) || {};
+    const { wastani } = array?.find((obj) => obj.wilaya === key) || {};
     return wastani;
   };
 
   const getPassedStatsByHalmaShauri = (array, key) => {
-    const { ufaulu } = array.find((obj) => obj.wilaya === key) || {};
+    const { ufaulu } = array?.find((obj) => obj.wilaya === key) || {};
     return ufaulu;
   };
 
   // Fetch setSchool
-  const { data: years, isLoading: isLoadingYear, isError: isErrorYear } = useQuery('years', fetchYear);
-  const { data: months, isLoading: isLoadingMonth, isError: isErrorMonth } = useQuery('months', fetchMonth);
+  const { data: years, isLoading: isLoadingYear, isError: isErrorYear } =
+    useQuery('years', fetchYear);
+  const { data: months, isLoading: isLoadingMonth, isError: isErrorMonth } =
+    useQuery('months', fetchMonth);
 
   const { data: ripotiYaMkoa, isLoading: isLoadingSchoolReport, isError: isErrorSchoolReport } =
     useQuery(['ripotiYaMkoa', month, year], fetchRipotiYaMkoa, { enabled: !!year && !!month });
- 
+
 
   // console.log(JSON.stringify(ripotiYaMkoa, null, 2))
   // console.log(JSON.stringify(wastaniReport, null, 2))
@@ -61,7 +58,6 @@ export default function TaarifaYaMkoa() {
       title: 'Na',
       dataIndex: 'na',
       key: 'na',
-      // render:(index)=>index+1,
       render: (text, record, index) => index + 1,
     },
     {
@@ -113,10 +109,10 @@ export default function TaarifaYaMkoa() {
         },
         {
           title: '%',
-          dataIndex: 'total_present',
-          key: 'total_present',
-          render: (total_present, item) => {
-            const percentage = ((total_present / item.total).toFixed(4) * 100).toFixed(2);
+          dataIndex: 'percent',
+          key: 'percent',
+          render: (text, record, index) => {
+            const percentage = ((record.total_present / record.total).toFixed(4) * 100).toFixed(2);
             return (
               <>{percentage}%</>
             );
@@ -146,10 +142,10 @@ export default function TaarifaYaMkoa() {
         },
         {
           title: '%',
-          dataIndex: 'total_absent',
-          key: 'notCompletedPercent',
-          render: (total_absent, item) => {
-            const percentage = ((total_absent / item.total).toFixed(4) * 100).toFixed(2)
+          dataIndex: 'percent',
+          key: 'percent',
+          render: (text, record, index) => {
+            const percentage = ((record.total_absent / record.total).toFixed(4) * 100).toFixed(2)
             return (
               <>{percentage}%</>
             )
@@ -212,10 +208,10 @@ export default function TaarifaYaMkoa() {
         },
         {
           title: '%',
-          dataIndex: 'total_present',
-          key: 'completedPercent',
-          render: (total_present, record) => {
-            const percentage = ((total_present / record.total).toFixed(4) * 100).toFixed(2);
+          dataIndex: 'percent',
+          key: 'percent',
+          render: (text, record, index) => {
+            const percentage = ((record.total_present / record.total).toFixed(4) * 100).toFixed(2);
             // const percentage = ((item.total_present / item.total) * 100).toFixed(2);
             return (
               <>{percentage}%</>
@@ -244,10 +240,10 @@ export default function TaarifaYaMkoa() {
         },
         {
           title: '%',
-          dataIndex: 'total_absent',
-          key: 'total_absent',
-          render: (total_absent, item) => {
-            const percentage = ((total_absent / item.total).toFixed(4) * 100).toFixed(2)
+          dataIndex: 'percent',
+          key: 'percent',
+          render: (text, record, item) => {
+            const percentage = ((record.total_absent / record.total).toFixed(4) * 100).toFixed(2)
             return <>{percentage}%</>
           }
         },
@@ -262,18 +258,44 @@ export default function TaarifaYaMkoa() {
           title: 'WAV',
           dataIndex: 'wavUfaulu',
           key: 'wavUfaulu',
-          // render:(item)=>{
-          //   const waliofaulu = getPassedStatsByHalmaShauri(boysPassedData,item.council)
-          //   return <>{waliofaulu}</>
-          // }
-        }, {
+          render: (text, record, index) => {
+            const waliofaulu = getPassedStatsByHalmaShauri(boysPassedData, record.council)
+            return <>{waliofaulu}</>
+          }
+        },
+        {
           title: 'WAS',
-          dataIndex: '',
-          key: ''
-        }, {
+          dataIndex: 'wasUfaulu',
+          key: 'wasUfaulu',
+          render: (text, record, index) => {
+            const waliofaulu = getPassedStatsByHalmaShauri(girlsPassedData, record.council)
+            return <>{waliofaulu}</>
+          }
+        },
+        {
           title: 'JUMLA',
           dataIndex: '',
-          key: ''
+          key: '',
+          render: (text, record, index) => {
+            const waliofaulu = (getPassedStatsByHalmaShauri(boysPassedData, record.council) +
+              getPassedStatsByHalmaShauri(girlsPassedData, record.council))
+            return <>{waliofaulu}</>
+          }
+        },
+        {
+          title: '%',
+          dataIndex: '',
+          key: '',
+          render: (text, record, index) => {
+            const waliofaulu = (
+              (
+                (getPassedStatsByHalmaShauri(boysPassedData, record.council) +
+                  getPassedStatsByHalmaShauri(girlsPassedData, record.council)) /
+                record.total_present
+              ).toFixed(4) * 100
+            ).toFixed(2)
+            return <>{waliofaulu}%</>
+          }
         }
       ]
     },
@@ -284,20 +306,47 @@ export default function TaarifaYaMkoa() {
       children: [
         {
           title: 'WAV',
-          dataIndex: '',
-          key: ''
+          dataIndex: 'present_boys',
+          key: 'present_boys',
+          render: (text, record, index) => {
+            const waliofaulu = record.present_boys - (getPassedStatsByHalmaShauri(boysPassedData, record.council))
+            return <>{waliofaulu}</>
+          }
         }, {
           title: 'WAS',
-          dataIndex: '',
-          key: ''
+          dataIndex: 'present_girls',
+          key: 'present_girls',
+          render: (text, record, index) => {
+            const waliofaulu = record.present_girls - (getPassedStatsByHalmaShauri(girlsPassedData, record.council))
+            return <>{waliofaulu}</>
+          }
         }, {
           title: 'JUMLA',
           dataIndex: '',
-          key: ''
+          key: '',
+          render: (text, record, index) => {
+            const waliofaulu = ((record.present_boys -
+              getPassedStatsByHalmaShauri(boysPassedData, record.council)) +
+              (record.present_girls -
+                getPassedStatsByHalmaShauri(girlsPassedData, record.council)))
+            return <>{waliofaulu}</>
+          }
         }, {
           title: '%',
           dataIndex: 'percent',
-          key: 'percent'
+          key: 'percent',
+          render: (text, record, index) => {
+            const waliofaulu = (
+              (
+                (record.present_boys -
+                  getPassedStatsByHalmaShauri(boysPassedData, record.council) +
+                  record.present_girls -
+                  getPassedStatsByHalmaShauri(girlsPassedData, record.council)) /
+                record.total_present
+              ).toFixed(4) * 100
+            ).toFixed(2)
+            return <>{waliofaulu}%</>
+          }
         }
       ]
     },
@@ -305,7 +354,10 @@ export default function TaarifaYaMkoa() {
       title: 'Wastani',
       dataIndex: '',
       key: '',
-
+      render: (text, record, index) => {
+        const waliofaulu = getValueByHalmashauri(averageData, record.council)
+        return <>{waliofaulu}</>
+      }
     }
   ];
 
@@ -420,293 +472,6 @@ export default function TaarifaYaMkoa() {
       ),
   });
 
-  //   {
-  //     title: 'S/N',
-  //     dataIndex:"sn",
-  //     key:'sn',
-  //     width: '2%'
-  //   },
-  //   {
-  //     title:'Halmashauri',
-  //     dataIndex:'hal',
-  //     key:'hal',
-  //     width:'10%'
-  //   },
-  //   {
-  //     title:'Waliosajiliw',
-  //     dataIndex:'sajili',
-  //     key:'sajili',
-  //     width:'13%',
-  //     children:[
-  //       {
-  //         title:'WAV',
-  //         dataIndex:'wav',
-  //         key:'wav',
-  //         width:'3%'
-  //       },
-  //       {
-  //         title:'WAS',
-  //         dataIndex:'was',
-  //         key:'was',
-  //         width:'3%'
-  //       },
-  //       {
-  //         title:'JUMLA',
-  //         dataIndex:'jumla',
-  //         key:'jumla',
-  //         width:'6%'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     title:'Waliofanya',
-  //     dataIndex:'fanya',
-  //     key:'fanya',
-  //     width:'20%',
-  //     children:[
-  //       {
-  //         title:'WAV',
-  //         dataIndex:'wav',
-  //         key:'wav',
-  //         width:'3%'
-  //       },
-  //       {
-  //         title:'WAS',
-  //         dataIndex:'was',
-  //         key:'was',
-  //         width:'3%'
-  //       },
-  //       {
-  //         title:'JUMLA',
-  //         dataIndex:'jumla',
-  //         key:'jumla',
-  //         width:'7%'
-  //       },
-  //       {
-  //         title:'%',
-  //         dataIndex:'percent',
-  //         key:'percent',
-  //         width:'7%'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     title:'Wasiofanya',
-  //     dataIndex:'wasiofanya',
-  //     key:'wasiofanya',
-  //     width:'20%',
-  //     children:[
-  //       {
-  //         title:'WAV',
-  //         dataIndex:'wav',
-  //         key:'wav',
-  //         width:'3%'
-  //       },
-  //       {
-  //         title:'WAS',
-  //         dataIndex:'was',
-  //         key:'was',
-  //         width:'3%'
-  //       },
-  //       {
-  //         title:'JUMLA',
-  //         dataIndex:'jumla',
-  //         key:'jumla',
-  //         width:'7%'
-  //       },
-  //       {
-  //         title:'%',
-  //         dataIndex:'percent',
-  //         key:'percent',
-  //         width:'7%'
-  //       }
-  //     ]
-  //   }
-  //  ]
-
-  // const colsKusoma = [
-  //   {
-  //     title: 'S/N',
-  //     dataIndex: 'sn',
-  //     key: 'sn',
-  //     // ...getColumnSearchProps('sn'),
-  //   },
-  //   {
-  //     title: 'Jina',
-  //     dataIndex: 'jina',
-  //     key: 'jina',
-  //     width: '18%',
-  //     ...getColumnSearchProps('jina'),
-  //   },
-  //   {
-  //     title: 'Jisia',
-  //     dataIndex: 'jisia',
-  //     key: 'jisia',
-  //     ...getColumnSearchProps('jisia'),
-  //   },
-  //   {
-  //     title: 'Sauti za herufi	',
-  //     dataIndex: 'sauti',
-  //     key: 'sauti',
-  //   },
-  //   {
-  //     title: 'Ubora wa Ufaulu	',
-  //     dataIndex: 'ufauluSauti',
-  //     key: 'ufauluSauti',
-  //   },
-  //   {
-  //     title: 'Maneno ya kubuni',
-  //     dataIndex: 'kubuni',
-  //     key: 'kubuni',
-  //   },
-  //   {
-  //     title: 'Ubora wa Ufaulu',
-  //     dataIndex: 'ufaulukubuni',
-  //     key: 'ufaulukubuni',
-  //   },
-  //   {
-  //     title: 'Kusoma Kwa Ufahamu',
-  //     dataIndex: 'ufahamu',
-  //     key: 'ufahamu',
-  //   },
-  //   {
-  //     title: 'Ubora wa Ufaulu',
-  //     dataIndex: 'ufauluUfahamu',
-  //     key: 'ufauluUfahamu',
-  //   },
-  //   {
-  //     title: 'Jumla',
-  //     dataIndex: 'jumla',
-  //     key: 'jumla',
-  //     ...getColumnSearchProps('jumla'),
-  //   },
-  //   {
-  //     title: 'Ubora wa Ufaulu',
-  //     dataIndex: 'ufauluJumla',
-  //     key: 'ufauluJumla',
-  //     ...getColumnSearchProps('ufauluJumla'),
-  //   },
-  // ];
-
-  // const colsKuandika = [
-  //   {
-  //     title: 'S/N',
-  //     dataIndex: 'sn',
-  //     key: 'sn',
-  //     // ...getColumnSearchProps('sn'),
-  //   },
-  //   {
-  //     title: 'Jina',
-  //     dataIndex: 'jina',
-  //     key: 'jina',
-  //     width: '18%',
-  //     ...getColumnSearchProps('jina'),
-  //   },
-  //   {
-  //     title: 'Jisia',
-  //     dataIndex: 'jisia',
-  //     key: 'jisia',
-  //     ...getColumnSearchProps('jisia'),
-  //   },
-  //   {
-  //     title: 'Imla',
-  //     dataIndex: 'sauti',
-  //     key: 'sauti',
-  //   },
-  //   {
-  //     title: 'Ubora wa Ufaulu',
-  //     dataIndex: 'ufauluSauti',
-  //     key: 'ufauluSauti',
-  //   },
-  //   {
-  //     title: 'Ubora wa Imla',
-  //     dataIndex: 'sauti',
-  //     key: 'sauti',
-  //   },
-  //   {
-  //     title: 'Ubora wa Ufaulu	',
-  //     dataIndex: 'ufauluSauti',
-  //     key: 'ufauluSauti',
-  //   },
-  //   {
-  //     title: 'Kupisijio Mistari Maeneo Yaliyochanganyika',
-  //     dataIndex: 'sauti',
-  //     key: 'sauti',
-  //   },
-  //   {
-  //     title: 'Alama za uandishi',
-  //     dataIndex: 'ufauluSauti',
-  //     key: 'ufauluSauti',
-  //   },
-  //   {
-  //     title: 'Ubora wa Ufuafu',
-  //     dataIndex: 'sauti',
-  //     key: 'sauti',
-  //   },
-  //   {
-  //     title: 'Kutambua Majina Ya Vitu',
-  //     dataIndex: 'ufauluSauti',
-  //     key: 'ufauluSauti',
-  //   },
-  // ];
-
-  // const colskuhesabu = [
-  //   {
-  //     title: 'S/N',
-  //     dataIndex: 'sn',
-  //     key: 'sn',
-  //     // ...getColumnSearchProps('sn'),
-  //   },
-  //   {
-  //     title: 'Jina',
-  //     dataIndex: 'jina',
-  //     key: 'jina',
-  //     width: '18%',
-  //     ...getColumnSearchProps('jina'),
-  //   },
-  //   {
-  //     title: 'Jisia',
-  //     dataIndex: 'jisia',
-  //     key: 'jisia',
-  //     ...getColumnSearchProps('jisia'),
-  //   },
-  //   {
-  //     title: 'Ubora wa Ufaulu',
-  //     dataIndex: 'ufauluJumla',
-  //     key: 'ufauluJumla',
-  //     ...getColumnSearchProps('ufauluJumla'),
-  //   },
-  //   {
-  //     title: 'Jumla',
-  //     dataIndex: 'jumla',
-  //     key: 'jumla',
-  //     ...getColumnSearchProps('jumla'),
-  //   },
-  //   {
-  //     title: 'Utambuzi wa Namba',
-  //     dataIndex: 'ufauluJumla',
-  //     key: 'ufauluJumla',
-  //     ...getColumnSearchProps('ufauluJumla'),
-  //   },
-  //   {
-  //     title: 'Ubora wa Ufaulu',
-  //     dataIndex: 'ufauluJumla',
-  //     key: 'ufauluJumla',
-  //     ...getColumnSearchProps('ufauluJumla'),
-  //   },
-  //   {
-  //     title: 'Kujumulisha na kutoa',
-  //     dataIndex: 'ufauluJumla',
-  //     key: 'ufauluJumla',
-  //     ...getColumnSearchProps('ufauluJumla'),
-  //   },
-  //   {
-  //     title: 'Ubora wa Ufuafu',
-  //     dataIndex: 'ufauluJumla',
-  //     key: 'ufauluJumla',
-  //     ...getColumnSearchProps('ufauluJumla'),
-  //   },
-  // ];
 
   return (
     <>
@@ -778,69 +543,63 @@ export default function TaarifaYaMkoa() {
       </div>
       {/* {/ /.content-header /} */}
 
-      <section className="content"
-        // style={{
-        //   overflow: "auto",
-        //   scrollBehavior: "smooth",
-        //   height: 580
-        // }}
-        >
-
-        {/* <div className="container-fluid">
-          <div className="row">
-            <div className='col-sm-12 mb-3'>
-              <h5 className='my-3'>Jedwali 1: Taarifa za watahiniwa waliosajiliwa na waliofanya upimaji wa darasa la pili kwa kila halmashauri</h5>
-              <Table
-                className='custom-table'
-                columns={columns}
-                dataSource={data1} />
-            </div>
-          </div>
-        </div> */}
-
-        <h5 className='my-3'>Jedwali 2: Muhtasari wa Matokeo ya Upimaji Darasa la Pili Kimkoa</h5>
+      <section className="content">
         <div className="container-fluid">
-          <div className="row">
-            <div className="col-12">
-              <Table
-                className='custom-table'
-                columns={colMkoa}
-                dataSource={ripotiYaMkoa}
-                scroll={{
-                  x: 3000,
-                }} />
+          <div className='row my-2'>
+            <div className='col-10'>
+              <h5>
+                Jedwali 1: Taarifa za watahiniwa waliosajiliwa na waliofanya upimaji
+                wa darasa la pili kwa kila halmashauri
+              </h5>
+            </div>
+            <div className='col-2'>
+              <Button type="primary">Chapisha PDF </Button>
             </div>
           </div>
-
-          <h5 className='my-3'>Jedwali 2: Muhtasari wa Matokeo ya Upimaji Darasa la Pili Kimkoa</h5>
           <div className="row">
             <div className="col-12">
-              <Table
-                className='custom-table'
-                columns={colsKuandika}
-                dataSource={ripotiYaMkoa}
-                scroll={{
-                  x: 3000,
-                }} />
+              {isLoadingSchoolReport && <p>Loading...</p>}
+              {isErrorSchoolReport && <p>Error loading months.</p>}
+              {!isLoadingSchoolReport && !isErrorSchoolReport && (
+                <Table
+                  className='custom-table'
+                  columns={colMkoa}
+                  dataSource={ripotiYaMkoa}
+                  pagination={false}
+                  scroll={{
+                    x: 1000,
+                  }} />
+              )}
             </div>
           </div>
-        </div> 
+        </div>
 
-        {/* <h5 className='my-3'>Jedwali 2: Muhtasari wa Matokeo ya Upimaji Darasa la Pili Kimkoa</h5>
-        <div className="container-fluid">
+        <div className="container-fluid mt-5">
+          <div className='row my-3'>
+            <div className='col-10'>
+              <h5 >Jedwali 2: Muhtasari wa Matokeo ya Upimaji Darasa la Pili Kimkoa</h5>
+            </div>
+            <div className='col-2'>
+              <Button type="primary">Chapisha PDF </Button>
+            </div>
+          </div>
           <div className="row">
             <div className="col-12">
-              <Table
-                className='custom-table'
-                columns={colsKuandika}
-                dataSource={ripotiYaMkoa}
-                scroll={{
-                  x: 3000,
-                }} />
+              {isLoadingSchoolReport && <p>Loading...</p>}
+              {isErrorSchoolReport && <p>Error loading months.</p>}
+              {!isLoadingSchoolReport && !isErrorSchoolReport && (
+                <Table
+                  className='custom-table'
+                  columns={colsKuandika}
+                  dataSource={ripotiYaMkoa}
+                  pagination={false}
+                  scroll={{
+                    x: 1000,
+                  }} />
+              )}
             </div>
           </div>
-        </div> */}
-
+        </div>
       </section>
     </>
   )

@@ -80,7 +80,7 @@ export const fetchReportHalimashauri = async ({ queryKey }) => {
   return response.data;
 };
 
-export const fetchRipotiYaMkoa = async ({queryKey})=>{
+export const fetchRipotiYaMkoa = async ({ queryKey }) => {
   const [_, month, year] = queryKey;
   const response = await axios.get(`/student-count/report/council/filter/${month}/${year}`);
   return response.data;
@@ -95,12 +95,11 @@ export const fetchBoysPassed = async ({ queryKey }) => {
 export const fetchGirlsPassed = async ({ queryKey }) => {
   const [_, month, year] = queryKey;
   const girlsPassed = await axios.get(`/api/mtwara/report/council/pass/stats/Msichana/${month}/${year}`)
-  // setGirlsPassed(girlsPassed.data)
   return girlsPassed.data
 }
-export const fetchAverage = async({queryKey})=>{
-  const [_,month,year]=queryKey;
-  const avg=await axios.get(`/coucil/average/filter/${year}?mwezi=${month}`)
+export const fetchAverage = async ({ queryKey }) => {
+  const [_, month, year] = queryKey;
+  const avg = await axios.get(`api/mtwara/report/coucil/average/filter/${year}?mwezi=${month}`)
   // setAverage(avg.data);
   return avg.data
 

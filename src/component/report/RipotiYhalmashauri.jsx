@@ -6,7 +6,7 @@ import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
 import { fetchReportHalimashauri, fetchRipotiYaShule } from '../../api/ripoti';
 import { Space, Table, Input, Button, Select } from 'antd';
 import { RipotiYaShuleChart } from '../../utils/Chart';
-import { boyCount, dhaifuCount, girlCount, hajuiCount, vizuriCount, vizuriSanaCount, wastaniCount } from './ReportFunctions';
+import { boyCount, dhaifuCount, getComment, girlCount, hajuiCount, vizuriCount, vizuriSanaCount, wastaniCount } from './ReportFunctions';
 
 export default function RipotiYaShule() {
 
@@ -315,58 +315,92 @@ export default function RipotiYaShule() {
     },
     {
       title: 'Kutambua vitu',
-      dataIndex: 'ufauluJumla',
+      dataIndex: 'picha',
       width: '.9%',
-      key: 'ufauluJumla',
+      key: 'picha',
       // ...getColumnSearchProps('ufauluJumla'),
     },
     {
       title: 'Jumla (Kuandika)',
-      dataIndex: 'ufauluJumla',
+      dataIndex: 'kuaT',
       width: '.9%',
-      key: 'ufauluJumla',
+      key: 'kuaT',
       // ...getColumnSearchProps('ufauluJumla'),
     },
     {
       title: 'Utambuzi wa nambari',
-      dataIndex: 'jumla',
+      dataIndex: 'uta',
       width: '1%',
-      key: 'jumla',
+      key: 'uta',
       // ...getColumnSearchProps('jumla'),
     },
     {
       title: 'Kujumlisha ngazi ya I',
-      dataIndex: 'ufauluJumla',
+      dataIndex: 'jum1',
       width: '1%',
-      key: 'ufauluJumla',
+      key: 'jum1',
       // ...getColumnSearchProps('ufauluJumla'),
     },
     {
       title: 'Kujumlisha ngazi ya II',
-      dataIndex: 'ufauluJumla',
+      dataIndex: 'jum2',
       width: '1%',
-      key: 'ufauluJumla',
+      key: 'jum2',
       // ...getColumnSearchProps('ufauluJumla'),
     },
     {
       title: 'Kutoa ngazi ya I',
-      dataIndex: 'ufauluJumla',
+      dataIndex: 'kut1',
       width: '1%',
-      key: 'ufauluJumla',
+      key: 'kut1',
       // ...getColumnSearchProps('ufauluJumla'),
     },
     {
       title: 'Kutoa ngazi ya II',
-      dataIndex: 'ufauluJumla',
+      dataIndex: 'kut2',
       width: '1%',
-      key: 'ufauluJumla',
+      key: 'kut2',
       // ...getColumnSearchProps('ufauluJumla'),
     },
     {
       title: 'Nambari Inayokosekana',
-      dataIndex: 'ufauluJumla',
+      dataIndex: 'nz',
       width: '1%',
-      key: 'ufauluJumla',
+      key: 'nz',
+      // ...getColumnSearchProps('ufauluJumla'),
+    },
+    {
+      title: 'Mafumbo',
+      dataIndex: 'maf',
+      width: '1%',
+      key: 'maf',
+      // ...getColumnSearchProps('ufauluJumla'),
+    },
+    {
+      title: 'Jumla (Hesabu)',
+      dataIndex: 'hesT',
+      width: '1%',
+      key: 'hesT',
+      // ...getColumnSearchProps('ufauluJumla'),
+    },
+    {
+      title: 'Jumla Kuu',
+      dataIndex: 'jumla',
+      width: '1%',
+      key: 'jumla',
+      // ...getColumnSearchProps('ufauluJumla'),
+    },
+    {
+      title: 'Maoni',
+      dataIndex: 'jumla',
+      width: '1%',
+      key: 'jumla',
+      render: (total) => {
+        const jumla = getComment(total);
+        return (
+          <>{jumla}</>
+        );
+      },
       // ...getColumnSearchProps('ufauluJumla'),
     },
   ];
@@ -548,7 +582,7 @@ export default function RipotiYaShule() {
                       columns={colsHalmashauri}
                       dataSource={councilReport}
                       scroll={{
-                        x: 2450,
+                        x: 2650,
                       }}
                     />
                   )}

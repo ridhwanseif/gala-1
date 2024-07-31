@@ -430,7 +430,6 @@ export default function RipotiYaShule() {
     },
   ];
 
-  // console.log(JSON.stringify(schoolReport, null, 2))
 
   const columns1 = [
     {
@@ -481,15 +480,14 @@ export default function RipotiYaShule() {
       wav: boyCount(transformedData),
       was: girlCount(transformedData),
       jum: boyCount(transformedData) + girlCount(transformedData),
-      viz: vizuriSanaCount(transformedData),
-      wast: vizuriCount(transformedData),
-      haf: wastaniCount(transformedData),
-      hafz: dhaifuCount(transformedData),
+      vizs: vizuriSanaCount(transformedData),
+      viz: vizuriCount(transformedData),
+      wast: wastaniCount(transformedData),
+      haf: dhaifuCount(transformedData),
       hafz: hajuiCount(transformedData),
     },
   ]
 
-  const [size, setSize] = useState('small');
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
@@ -1019,12 +1017,13 @@ export default function RipotiYaShule() {
                         className="form-control"
                         onChange={(e) => {
                           setSchoolNo(e.target.value)
+                          setSchool()
                         }}
                       >
                         <option selected="selected" >--Chagua--</option>
-                        {schools?.map((y) => (
+                        {schools?.map((y) => {
                           <option key={y.id} value={y.school_reg_number}>{y.school_name}</option>
-                        ))}
+                        })}
                       </select>
                     )}
                   </div>
@@ -1069,7 +1068,16 @@ export default function RipotiYaShule() {
                     )}
                   </div>
                 </div>
+              </div>
 
+              <div className="row mt-3">
+                <div className="col-sm-6 float-right">
+                  {/* <h5> Report ya shule ya <h5/> */}
+                </div>
+
+                <div className="col-sm-6 float-right">
+
+                </div>
               </div>
 
             </div>
@@ -1084,6 +1092,16 @@ export default function RipotiYaShule() {
         {!isLoadingSchoolReport && !isErrorSchoolReport && (
           <>
             <div className="container-fluid">
+              <div className='row my-3'>
+                <div className='col-10'>
+                  <h3>
+                    Ripoti ya shule ya 
+                  </h3>
+                </div>
+                <div className='col-2'>
+                  <Button type="primary">chapisha PDF </Button>
+                </div>
+              </div>
               <div className="row">
                 <div className='col-sm-12 mb-3'>
                   <h4>Ujumla ya Wanafunzi</h4>

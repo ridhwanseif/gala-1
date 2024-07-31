@@ -1,13 +1,15 @@
 import React, { useRef, useState } from 'react'
 import { useQuery } from 'react-query';
 import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
-import { SearchOutlined } from '@ant-design/icons';
+import { FileTextOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Space, Table, Spin, Alert } from 'antd';
 import Highlighter from 'react-highlight-words';
+import { Link } from 'react-router-dom';
 
 export default function Shule() {
 
   const [searchText, setSearchText] = useState('');
+  const [schoolRecord, setSchooleRecord] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
@@ -154,6 +156,19 @@ export default function Shule() {
       width: '20%',
       ...getColumnSearchProps('council'),
     },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      width: '15%',
+      render: (text,record,index) => {
+        return (
+          <Link>
+            <FileTextOutlined onClick={()=>setSchooleRecord(record)} />
+          </Link>
+        );
+      },
+    },
   ];
 
   if (isLoadingSchool) {
@@ -185,10 +200,10 @@ export default function Shule() {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 mt-4">
-                <Table 
-                columns={columns} 
-                dataSource={schools}
-                className='custom-table'
+                <Table
+                  columns={columns}
+                  dataSource={schools}
+                  className='custom-table'
                 />
               </div>
               {/* /.col */}
