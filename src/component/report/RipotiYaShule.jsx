@@ -5,7 +5,7 @@ import { fetchMonth, fetchYear } from '../../api/upimajiFilterAPI';
 import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
 import { fetchRipotiYaShule } from '../../api/ripoti';
 import { Space, Table, Tag, Tabs, Input, Button } from 'antd';
-import { azuPassCount, boyCount, dhaifuCount, getComment100, getComment12, getComment16, getComment20, getComment24, getComment40, getComment8, girlCount, hajuiCount, imlaAverage, imlaPassCount, jum1Average, jum1PassCount, jum2Average, jum2PassCount, kkuAverage, kut1Average, kut1PassCount, kut2Average, kut2PassCount, mafAverage, mafPassCount, mykAverage, mykPassCount, ndogoAverage, ndogoPassCount, nzAverage, nzPassCount, szhAverage, szhPassCount, uanAverage, utaAverage, utaPassCount, vituAverage, vituPassCount, vizuriCount, vizuriSanaCount, wastaniCount } from './ReportFunctions';
+import { azuPassCount, boyCount, dhaifuCount, getComment, getComment100, getComment12, getComment16, getComment20, getComment24, getComment40, getComment8, girlCount, hajuiCount, imlaAverage, imlaPassCount, jum1Average, jum1PassCount, jum2Average, jum2PassCount, kkuAverage, kkuPassCount, kut1Average, kut1PassCount, kut2Average, kut2PassCount, mafAverage, mafPassCount, mykAverage, mykPassCount, ndogoAverage, ndogoPassCount, nzAverage, nzPassCount, progressTowardsThreshold, szhAverage, szhPassCount, uanAverage, utaAverage, utaPassCount, vituAverage, vituPassCount, vizuriCount, vizuriSanaCount, wastaniCount } from './ReportFunctions';
 import {
   Bar,
   BarChart,
@@ -15,6 +15,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export default function RipotiYaShule() {
 
@@ -23,6 +25,116 @@ export default function RipotiYaShule() {
   const [school, setSchool] = useState();
   const [schoolNo, setSchoolNo] = useState();
   const [data, setData] = useState([]);
+
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef(null);
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText('');
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1677ff' : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: '#ffc069',
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
 
 
   // Fetch setSchool
@@ -115,21 +227,21 @@ export default function RipotiYaShule() {
       key: '3',
       area: 'Kusoma kwa ufahamu',
       description: 'Wanafunzi walioeza kujibu kwa usahihi yanayotokana na kusoma kwa ufahamu',
-      vizuriSanaWav: mykPassCount(transformedData, "Mvulana", "VS"),
-      vizuriSanaWas: mykPassCount(transformedData, "Msichana", "VS"),
-      vizuriSanaJum: mykPassCount(transformedData, "Mvulana", "VS") + mykPassCount(transformedData, "Msichana", "VS"),
-      vizuriWav: mykPassCount(transformedData, "Mvulana", "VZ"),
-      vizuriWas: mykPassCount(transformedData, "Msichana", "VZ"),
-      vizuriJum: mykPassCount(transformedData, "Mvulana", "VZ") + mykPassCount(transformedData, "Msichana", "VZ"),
-      wastaniWav: mykPassCount(transformedData, "Mvulana", "WS"),
-      wastaniWas: mykPassCount(transformedData, "Msichana", "WS"),
-      wastaniJum: mykPassCount(transformedData, "Mvulana", "WS") + mykPassCount(transformedData, "Msichana", "Wastani/Inarishisha"),
-      dhaifuWav: mykPassCount(transformedData, "Mvulana", "DH"),
-      dhaifuWas: mykPassCount(transformedData, "Msichana", "DH"),
-      dhaifuJum: mykPassCount(transformedData, "Mvulana", "DH") + mykPassCount(transformedData, "Msichana", "DH"),
-      hajuiWav: mykPassCount(transformedData, "Mvulana", "HJ"),
-      hajuiWas: mykPassCount(transformedData, "Msichana", "HJ"),
-      hajuiJum: mykPassCount(transformedData, "Mvulana", "HJ") + mykPassCount(transformedData, "Msichana", "HJ"),
+      vizuriSanaWav: kkuPassCount(transformedData, "Mvulana", "VS"),
+      vizuriSanaWas: kkuPassCount(transformedData, "Msichana", "VS"),
+      vizuriSanaJum: kkuPassCount(transformedData, "Mvulana", "VS") + kkuPassCount(transformedData, "Msichana", "VS"),
+      vizuriWav: kkuPassCount(transformedData, "Mvulana", "VZ"),
+      vizuriWas: kkuPassCount(transformedData, "Msichana", "VZ"),
+      vizuriJum: kkuPassCount(transformedData, "Mvulana", "VZ") + kkuPassCount(transformedData, "Msichana", "VZ"),
+      wastaniWav: kkuPassCount(transformedData, "Mvulana", "WS"),
+      wastaniWas: kkuPassCount(transformedData, "Msichana", "WS"),
+      wastaniJum: kkuPassCount(transformedData, "Mvulana", "WS") + kkuPassCount(transformedData, "Msichana", "WS"),
+      dhaifuWav: kkuPassCount(transformedData, "Mvulana", "DH"),
+      dhaifuWas: kkuPassCount(transformedData, "Msichana", "DH"),
+      dhaifuJum: kkuPassCount(transformedData, "Mvulana", "DH") + kkuPassCount(transformedData, "Msichana", "DH"),
+      hajuiWav: kkuPassCount(transformedData, "Mvulana", "HJ"),
+      hajuiWas: kkuPassCount(transformedData, "Msichana", "HJ"),
+      hajuiJum: kkuPassCount(transformedData, "Mvulana", "HJ") + kkuPassCount(transformedData, "Msichana", "HJ"),
     },
     {
       area: 'Umahiri wa Kuandika'
@@ -362,7 +474,6 @@ export default function RipotiYaShule() {
     },
   ];
 
-
   const columnsa = [
     {
       title: 'sn',
@@ -430,7 +541,7 @@ export default function RipotiYaShule() {
     },
   ];
 
-
+  // sumary report table
   const columns1 = [
     {
       title: 'Wavulana',
@@ -487,116 +598,6 @@ export default function RipotiYaShule() {
       hafz: hajuiCount(transformedData),
     },
   ]
-
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
-  const searchInput = useRef(null);
-
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
-  };
-
-  const handleReset = (clearFilters) => {
-    clearFilters();
-    setSearchText('');
-  };
-
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{
-            marginBottom: 8,
-            display: 'block',
-          }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            close
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? '#1677ff' : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-    render: (text) =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{
-            backgroundColor: '#ffc069',
-            padding: 0,
-          }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
-  });
 
 
   const columns = [
@@ -875,6 +876,108 @@ export default function RipotiYaShule() {
             );
           },
         },
+        {
+          title: 'Kutoa Ngazi ya II',
+          dataIndex: 'kut2',
+          key: 'kut2',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'kut2',
+          key: 'kut2',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment12(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Namba Inayokosekana',
+          dataIndex: 'nz',
+          key: 'nz',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'nz',
+          key: 'nz',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment24(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Mafumbo',
+          dataIndex: 'maf',
+          key: 'maf',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'maf',
+          key: 'maf',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment16(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Jumla',
+          dataIndex: 'hesT',
+          key: 'hesT',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'hesT',
+          key: 'hesT',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment100(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Jumla Ya Alama',
+          dataIndex: 'jumla',
+          key: 'jumla',
+          width: '4%',
+        },
+        {
+          title: 'Ubora wa Ufaulu',
+          dataIndex: 'jumla',
+          key: 'jumla',
+          width: '4%',
+          render: (marks) => {
+            const percentage = getComment(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
+        {
+          title: 'Wastani',
+          dataIndex: 'jumla',
+          key: 'jumla',
+          width: '4%',
+          render: (marks) => {
+            const percentage = progressTowardsThreshold(marks);
+            return (
+              <>{percentage}</>
+            );
+          },
+        },
       ],
     },
   ];
@@ -983,6 +1086,38 @@ export default function RipotiYaShule() {
       </ResponsiveContainer>
     </div>
   );
+
+
+  const handleActionClick = () => {
+    // Create a new instance of jsPDF
+    const doc = new jsPDF();
+
+    // Define the table headers and data
+    const tableHeaders = columns1.map(col => col.title);
+    const tableData = data1.map(row => columns1.map(col => row[col.dataIndex]));
+
+    // Add the table to the PDF
+    doc.autoTable({
+      head: [tableHeaders],
+      body: tableData,
+    });
+
+    // Define the table headers and data for the second table
+    const table2Headers = columnsa.map(col => col.title);
+    const table2Data = dataSource.map(row => columnsa.map(col => row[col.dataIndex]));
+
+    // Add the second table to the PDF
+    doc.autoTable({
+      head: [table2Headers],
+      body: table2Data,
+      startY: doc.autoTable.previous.finalY + 10, // Starting position for the second table
+      styles: { fontSize: 7, cellPadding: 1},
+      tableWidth: '3rem',
+    });
+
+    // Save the PDF
+    doc.save('table_data.pdf');
+  };
 
   return (
     <>
@@ -1103,9 +1238,9 @@ export default function RipotiYaShule() {
                   </h4>
                 </div>
                 <div className='col-2'>
-                  <Button type="primary">chapisha PDF </Button>
+                  <Button type="primary" onClick={() => handleActionClick()}>Chapisha PDF </Button>
                 </div>
-                <hr/>
+                <hr />
               </div>
               <div className="row">
                 <div className='col-sm-12 mb-3'>
@@ -1128,7 +1263,7 @@ export default function RipotiYaShule() {
                     columns={columns}
                     dataSource={schoolReport}
                     scroll={{
-                      x: 3000,
+                      x: 4000,
                     }} />
                 </div>
               </div>

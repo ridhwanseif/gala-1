@@ -7,6 +7,9 @@ import { fetchReportHalimashauri, fetchRipotiYaShule } from '../../api/ripoti';
 import { Space, Table, Input, Button, Select } from 'antd';
 import { RipotiYaShuleChart } from '../../utils/Chart';
 import { boyCount, dhaifuCount, getComment, girlCount, hajuiCount, vizuriCount, vizuriSanaCount, wastaniCount } from './ReportFunctions';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 
 export default function RipotiYaShule() {
 
@@ -405,6 +408,36 @@ export default function RipotiYaShule() {
     },
   ];
 
+  const handleActionClick = () => {
+    // Create a new instance of jsPDF
+    const doc = new jsPDF();
+
+    // Define the table headers and data
+    const tableHeaders = columns1.map(col => col.title);
+    const tableData = data1.map(row => columns1.map(col => row[col.dataIndex]));
+
+    // Add the table to the PDF
+    doc.autoTable({
+      head: [tableHeaders],
+      body: tableData,
+    });
+
+    // Define the table headers and data for the second table
+    const table2Headers = colsHalmashauri.map(col => col.title);
+    const table2Data = councilReport?.map(row => colsHalmashauri.map(col => row[col.dataIndex]));
+
+    // Add the second table to the PDF
+    doc.autoTable({
+      head: [table2Headers],
+      body: table2Data,
+      startY: doc.autoTable.previous.finalY + 10, // Starting position for the second table
+      styles: { fontSize: 5, cellPadding: 1},
+      // tableWidth: 190,
+    });
+
+    // Save the PDF
+    doc.save('table_data.pdf');
+  };
 
   return (
     <>
@@ -549,6 +582,22 @@ export default function RipotiYaShule() {
             </div>
           </div>
         </div>
+
+        {isLoadingCouncil && <p>Loading...</p>}
+        {isErrorCouncil && <p>Error loading months.</p>}
+        {!isLoadingCouncil && !isErrorCouncil && (
+        <div className='row my-4'>
+          <div className='col-10'>
+            <h4 className='text-center'>
+              Ripoti ya Halmashauri ya {council}
+            </h4>
+          </div>
+          <div className='col-2'>
+            <Button type="primary" onClick={() => handleActionClick()}>Chapisha PDF </Button>
+          </div>
+          <hr />
+        </div>
+        )}
       </div>
       {/* /.content-header */}
 
