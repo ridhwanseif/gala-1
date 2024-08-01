@@ -1088,7 +1088,7 @@ export default function RipotiYaShule() {
   );
 
 
-  const handleActionClick = () => {
+  const handlePDF = () => {
     // Create a new instance of jsPDF
     const doc = new jsPDF();
 
@@ -1111,12 +1111,12 @@ export default function RipotiYaShule() {
       head: [table2Headers],
       body: table2Data,
       startY: doc.autoTable.previous.finalY + 10, // Starting position for the second table
-      styles: { fontSize: 7, cellPadding: 1},
+      styles: { fontSize: 7, cellPadding: 1 },
       tableWidth: '3rem',
     });
 
     // Save the PDF
-    doc.save('table_data.pdf');
+    doc.save('Ripoti_ya_shule_ya' + school + '_' + schoolNo + '.pdf');
   };
 
   return (
@@ -1238,7 +1238,7 @@ export default function RipotiYaShule() {
                   </h4>
                 </div>
                 <div className='col-2'>
-                  <Button type="primary" onClick={() => handleActionClick()}>Chapisha PDF </Button>
+                  <Button type="primary" onClick={() => handlePDF()}>Chapisha PDF </Button>
                 </div>
                 <hr />
               </div>

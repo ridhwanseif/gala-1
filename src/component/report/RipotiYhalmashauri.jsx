@@ -431,12 +431,12 @@ export default function RipotiYaShule() {
       head: [table2Headers],
       body: table2Data,
       startY: doc.autoTable.previous.finalY + 10, // Starting position for the second table
-      styles: { fontSize: 5, cellPadding: 1},
+      styles: { fontSize: 5, cellPadding: 1 },
       // tableWidth: 190,
     });
 
     // Save the PDF
-    doc.save('table_data.pdf');
+    doc.save('Ripoti_ya_Halmashauri_ya_' + council + '.pdf');
   };
 
   return (
@@ -586,17 +586,17 @@ export default function RipotiYaShule() {
         {isLoadingCouncil && <p>Loading...</p>}
         {isErrorCouncil && <p>Error loading months.</p>}
         {!isLoadingCouncil && !isErrorCouncil && (
-        <div className='row my-4'>
-          <div className='col-10'>
-            <h4 className='text-center'>
-              Ripoti ya Halmashauri ya {council}
-            </h4>
+          <div className='row my-4'>
+            <div className='col-10'>
+              <h4 className='text-center'>
+                Ripoti ya Halmashauri ya {council}
+              </h4>
+            </div>
+            <div className='col-2'>
+              <Button type="primary" onClick={() => handleActionClick()}>Chapisha PDF </Button>
+            </div>
+            <hr />
           </div>
-          <div className='col-2'>
-            <Button type="primary" onClick={() => handleActionClick()}>Chapisha PDF </Button>
-          </div>
-          <hr />
-        </div>
         )}
       </div>
       {/* /.content-header */}
