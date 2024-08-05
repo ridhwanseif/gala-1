@@ -4,6 +4,9 @@ import axios from './axios';
 export const fetchRipotiYaShule = async ({ queryKey }) => {
   const [_, month, year, schoolNo] = queryKey
   const response = await axios.get(`api/mtwara/report/school/report/filter/${year}?shuleNo=${schoolNo}&mwezi=${month}`);
+  if (!response.data) {
+    throw new Error('Hakuna majibu ya mtandao');
+  }
   return response.data;
 };
 
@@ -77,12 +80,18 @@ export const fetchReportHalimashauri = async ({ queryKey }) => {
       mwezi: month,
     },
   });
+  if (!response.data) {
+    throw new Error('Hakuna majibu ya mtandao');
+  }
   return response.data;
 };
 
 export const fetchRipotiYaMkoa = async ({ queryKey }) => {
   const [_, month, year] = queryKey;
   const response = await axios.get(`/student-count/report/council/filter/${month}/${year}`);
+  if (!response.data) {
+    throw new Error('Hakuna majibu ya mtandao');
+  }
   return response.data;
 
 }
@@ -90,17 +99,24 @@ export const fetchRipotiYaMkoa = async ({ queryKey }) => {
 export const fetchBoysPassed = async ({ queryKey }) => {
   const [_, month, year] = queryKey;
   const boysPassed = await axios.get(`/api/mtwara/report/council/pass/stats/Mvulana/${month}/${year}`)
+  if (!boysPassed.data) {
+    throw new Error('Hakuna majibu ya mtandao');
+  }
   return boysPassed.data
 }
 export const fetchGirlsPassed = async ({ queryKey }) => {
   const [_, month, year] = queryKey;
   const girlsPassed = await axios.get(`/api/mtwara/report/council/pass/stats/Msichana/${month}/${year}`)
+  if (!girlsPassed.data) {
+    throw new Error('Hakuna majibu ya mtandao');
+  }
   return girlsPassed.data
 }
 export const fetchAverage = async ({ queryKey }) => {
   const [_, month, year] = queryKey;
   const avg = await axios.get(`api/mtwara/report/coucil/average/filter/${year}?mwezi=${month}`)
-  // setAverage(avg.data);
+  if (!avg.data) {
+    throw new Error('Hakuna majibu ya mtandao');
+  }
   return avg.data
-
 }

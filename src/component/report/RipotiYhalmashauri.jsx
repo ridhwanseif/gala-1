@@ -3,9 +3,8 @@ import { useQuery } from 'react-query';
 import { SearchOutlined } from '@ant-design/icons';
 import { fetchCouncil, fetchMonth, fetchWard, fetchYear } from '../../api/upimajiFilterAPI';
 import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
-import { fetchReportHalimashauri, fetchRipotiYaShule } from '../../api/ripoti';
-import { Space, Table, Input, Button, Select } from 'antd';
-import { RipotiYaShuleChart } from '../../utils/Chart';
+import { fetchReportHalimashauri } from '../../api/ripoti';
+import { Space, Table, Input, Button, Select, Alert, Spin } from 'antd';
 import { boyCount, dhaifuCount, getComment, girlCount, hajuiCount, vizuriCount, vizuriSanaCount, wastaniCount } from './ReportFunctions';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -27,15 +26,47 @@ export default function RipotiYaShule() {
   const { data: months, isLoading: isLoadingMonth, isError: isErrorMonth } = useQuery('months', fetchMonth);
   const { data: schools, isLoading: isLoadingSchool, isError: isErrorSchool } = useQuery('schools', fetchMwatwaraSchools);
   const { data: councils, isLoading: isLoadingCouncil, isError: isErrorCouncil } = useQuery('councils', fetchCouncil);
-  const { data: councilReport, isLoading: isLoadingCouncilReport, isError: isErrorCouncilReport } =
+  const {
+    data: councilReport,
+    isLoading: isLoadingCouncilReport,
+    isError: isErrorCouncilReport,
+    error: fetchError, } =
     useQuery(['councilReport', year, ward, schoolNo, gender, month, council], fetchReportHalimashauri, { enabled: !!year && !!month });
 
   const { data: wards, isLoading: isLoadingWards, isError: isErrorWards } =
     useQuery(['wards', council], fetchWard, { enabled: !!council });
 
-
-  // console.log(councilReport)
-  // console.log(JSON.stringify(councilReport, null, 2))
+  const transformedData = councilReport ? councilReport.map(report => ({
+    id: report.id,
+    mkoa: report.mkoa,
+    wilaya: report.wilaya,
+    kata: report.kata,
+    shule: report.shule,
+    shuleNo: report.shuleNo,
+    jina: report.jina,
+    usajiliNo: report.usajiliNo,
+    jinsia: report.jinsia,
+    mwezi: report.mwezi,
+    mwaka: report.mwaka,
+    kku: report.kku,
+    myk: report.myk,
+    szh: report.szh,
+    imla: report.imla,
+    uaf: report.uaf,
+    picha: report.picha,
+    hzm: report.hzm,
+    uta: report.uta,
+    maf: report.maf,
+    jum1: report.jum1,
+    jum2: report.jum2,
+    kut1: report.kut1,
+    kut2: report.kut2,
+    nz: report.nz,
+    kusT: report.kusT,
+    kuaT: report.kuaT,
+    hesT: report.hesT,
+    jumla: report.jumla
+  })) : [];
 
   const columns1 = [
     {
@@ -81,39 +112,6 @@ export default function RipotiYaShule() {
     },
   ];
 
-  const transformedData = councilReport ? councilReport.map(report => ({
-    id: report.id,
-    mkoa: report.mkoa,
-    wilaya: report.wilaya,
-    kata: report.kata,
-    shule: report.shule,
-    shuleNo: report.shuleNo,
-    jina: report.jina,
-    usajiliNo: report.usajiliNo,
-    jinsia: report.jinsia,
-    mwezi: report.mwezi,
-    mwaka: report.mwaka,
-    kku: report.kku,
-    myk: report.myk,
-    szh: report.szh,
-    imla: report.imla,
-    uaf: report.uaf,
-    picha: report.picha,
-    hzm: report.hzm,
-    uta: report.uta,
-    maf: report.maf,
-    jum1: report.jum1,
-    jum2: report.jum2,
-    kut1: report.kut1,
-    kut2: report.kut2,
-    nz: report.nz,
-    kusT: report.kusT,
-    kuaT: report.kuaT,
-    hesT: report.hesT,
-    jumla: report.jumla
-  })) : [];
-
-
   const data1 = [
     {
       key: '1',
@@ -123,7 +121,7 @@ export default function RipotiYaShule() {
       viz: vizuriSanaCount(transformedData),
       wast: vizuriCount(transformedData),
       haf: wastaniCount(transformedData),
-      hafz: dhaifuCount(transformedData),
+      hafs: dhaifuCount(transformedData),
       hafz: hajuiCount(transformedData),
     },
   ]
@@ -439,6 +437,25 @@ export default function RipotiYaShule() {
     doc.save('Ripoti_ya_Halmashauri_ya_' + council + '.pdf');
   };
 
+
+  const handleChangeSchool = (value) => {
+    const selectedSchool = schools.find(y => y.school_reg_number === value);
+    setSchoolNo(value);
+    setSchool(selectedSchool ? selectedSchool.school_name : '');
+  };
+
+  const handleChangeWord = (value) => {
+    setWard(value);
+  };
+
+  const handleChangeCouncil = (value) => {
+    setCouncil(value);
+  };
+
+  const handleChangeGender = (value) => {
+    setGender(value);
+  };
+
   return (
     <>
       {/* Content Header (Page header) */}
@@ -446,209 +463,213 @@ export default function RipotiYaShule() {
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h4>Ripoti ya Halmashauri</h4>
+              <h5>Ripoti ya Halmashauri</h5>
             </div>
             <div class="col-sm-6">
               <div className='row'>
                 <div className='col-sm-12'>
                   <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">DataTables</li>
+                    <li class="breadcrumb-item"><a href="#">Nyumbani</a></li>
+                    <li class="breadcrumb-item active">RipotiYaHalmashauri</li>
                   </ol>
                 </div>
               </div>
             </div>
           </div>
           <div className="row mt-3">
-            <div className="col-sm-2 float-right">
+            <div className="col-sm-4 float-right">
               <div className="form-group">
-                <label>Chagua Halmashauri</label>
+                <label>Chagua Halmashauri</label><br />
                 {isLoadingCouncil ? (
                   <p>Loading...</p>
                 ) : isErrorCouncil ? (
                   <p>Error loading Halmashauri.</p>
                 ) : (
-                  <select
-                    className="form-control"
-                    onChange={(e) => {
-                      setCouncil(e.target.value)
-                    }}
+
+                  <Select
+                    defaultValue="Chagua halmashauri"
+                    style={{ width: 170 }}
+                    onChange={handleChangeCouncil}
+                    placeholder="--Chagua--"
+                    showSearch
+                    filterOption={(input, option) =>
+                      option.children.toLowerCase().includes(input.toLowerCase())
+                    }
                   >
-                    <option selected="selected" >--Chagua--</option>
-                    {councils?.map((y) => (
-                      <option key={y.id} value={y}>{y}</option>
+                    {councils?.map((c) => (
+                      <Option key={c.id} value={c}>
+                        {c}
+                      </Option>
                     ))}
-                  </select>
+                  </Select>
                 )}
               </div>
+
             </div>
-            <div className="col-sm-2 float-right">
+            <div className="col-sm-4 float-right">
               <div className="form-group">
-                <label>Chagua kata</label>
+                <label>Chagua kata</label><br />
                 {isLoadingWards ? (
                   <p>Loading...</p>
                 ) : isErrorMonth ? (
                   <p>Error loading Kata.</p>
                 ) : (
-                  <select
-                    className="form-control"
-                    onChange={(e) => setWard(e.target.value)}
+
+                  <Select
+                    defaultValue="Chagua kata"
+                    style={{ width: 170 }}
+                    onChange={handleChangeWord}
+                    placeholder="--Chagua--"
+                    showSearch
+                    filterOption={(input, option) =>
+                      option.children.toLowerCase().includes(input.toLowerCase())
+                    }
                   >
-                    <option selected="selected" >--Chagua--</option>
                     {wards?.map((w) => (
-                      <option key={w} value={w}>{w}</option>
+                      <Option key={w} value={w}>
+                        {w}
+                      </Option>
                     ))}
-                  </select>
+                  </Select>
                 )}
               </div>
             </div>
-            <div className="col-sm-2 float-right">
+            <div className="col-sm-4 float-right">
               <div className="form-group">
-                <label>Chagua Shule</label>
+                <label>Chagua Shule</label><br />
                 {isLoadingYear ? (
                   <p>Loading...</p>
                 ) : isErrorYear ? (
                   <p>Error loading Shule.</p>
                 ) : (
-                  <select
-                    className="form-control"
-                    onChange={(e) => {
-                      setSchool(e.target.value)
-                      setSchoolNo(e.target.value)
-                    }
+                  <Select
+                    defaultValue="Chagua Shule"
+                    style={{ width: 200 }}
+                    onChange={handleChangeSchool}
+                    placeholder="--Chagua--"
+                    showSearch
+                    filterOption={(input, option) =>
+                      option.children.toLowerCase().includes(input.toLowerCase())
                     }
                   >
-                    <option selected="selected" >--Chagua--</option>
                     {schools?.map((s) => (
-                      <option key={s.id} value={s.school_reg_number}>{s.school_name}</option>
+                      <Option key={s.id} value={s.school_reg_number}>
+                        {s.school_name}
+                      </Option>
                     ))}
-                  </select>
+                  </Select>
                 )}
               </div>
             </div>
-            <div className="col-sm-2 float-right">
+            <div className="col-sm-4 float-right">
               <div className="form-group">
-                <label>Jinsia</label>
-                <select
-                  className="form-control"
-                  onChange={(e) => setGender(e.target.value)}
-                >
-                  <option value="" selected="selected">--Chagua--</option>
-                  <option value="Mvulana">Mvulana</option>
-                  <option value="Msichana">Msichana</option>
-                </select>
+                <label>Jinsia</label><br />
+                <Select
+                  defaultValue="Chagua mwezi"
+                  style={{ width: 170 }}
+                  onChange={handleChangeGender}
+                  options={[
+                    {
+                      value: 'Mvulana',
+                      label: 'Mvulana',
+                    },
+                    {
+                      value: 'Msichana',
+                      label: 'Msichana',
+                    },
+                  ]}
+                />
               </div>
             </div>
-            <div className="col-sm-2 float-right">
+            <div className="col-sm-4 float-right">
               <div className="form-group">
-                <label>Mwezi</label>
+                <label>Mwezi</label><br />
                 {isLoadingMonth ? (
                   <p>Loading...</p>
                 ) : isErrorMonth ? (
                   <p>Error loading months.</p>
                 ) : (
-                  <select
-                    className="form-control"
-                    onChange={(e) => setMonth(e.target.value)}
+                  <Select
+                    defaultValue="Chagua mwezi"
+                    style={{ width: 170 }}
+                    onChange={setMonth} // no need to wrap it with (e) => setYear(e.target.value)
                   >
-                    <option selected="selected" >--Chagua--</option>
-
-                    {months.map((m) => (
-                      <option key={m} value={m}>{m}</option>
+                    {months?.map((m) => (
+                      <Option key={m} value={m}>{m}</Option>
                     ))}
-                  </select>
+                  </Select>
                 )}
               </div>
             </div>
             <div className="col-sm-2 float-right">
               <div className="form-group">
-                <label>Mwaka</label>
+                <label>Mwaka</label><br />
                 {isLoadingYear ? (
                   <p>Loading...</p>
                 ) : isErrorYear ? (
                   <p>Error loading years.</p>
                 ) : (
-                  <select
-                    className="form-control"
-                    onChange={(e) => setYear(e.target.value)}
+                  <Select
+                    defaultValue="Chagua mwaka"
+                    style={{ width: 170 }}
+                    onChange={setYear} // no need to wrap it with (e) => setYear(e.target.value)
                   >
-                    <option selected="selected" >--Chagua--</option>
                     {years?.map((y) => (
-                      <option key={y} value={y}>{y}</option>
+                      <Option key={y} value={y}>{y}</Option>
                     ))}
-                  </select>
+                  </Select>
                 )}
               </div>
             </div>
           </div>
         </div>
-
-        {isLoadingCouncil && <p>Loading...</p>}
-        {isErrorCouncil && <p>Error loading months.</p>}
-        {!isLoadingCouncil && !isErrorCouncil && (
-          <div className='row my-4'>
-            <div className='col-10'>
-              <h4 className='text-center'>
-                Ripoti ya Halmashauri ya {council}
-              </h4>
-            </div>
-            <div className='col-2'>
-              <Button type="primary" onClick={() => handleActionClick()}>Chapisha PDF </Button>
-            </div>
-            <hr />
+        <div className='row my-4'>
+          <div className='col-10'>
+            <h5 className='text-center'>
+              Ripoti ya Halmashauri ya {council}
+            </h5>
           </div>
-        )}
+          <div className='col-2'>
+            <Button type="primary" onClick={() => handleActionClick()}>Chapisha PDF </Button>
+          </div>
+          <hr />
+        </div>
       </div>
       {/* /.content-header */}
-
       <section className="content">
-
-        {isLoadingCouncilReport && <p>Loading...</p>}
-        {isErrorCouncilReport && <p>Error loading months.</p>}
-        {!isLoadingCouncilReport && !isErrorCouncilReport && (
-          <>
-            <div className="container-fluid">
-              <div className="row">
-                <div className='col-sm-12 mb-3'>
-                  <h4>Ujumla ya Wanafunzi</h4>
-                  <Table className='custom-table'
-                    columns={columns1}
-                    dataSource={data1}
-                    pagination={false} />
-
-                </div>
+        {fetchError && (
+          <Alert className='flex-center' message="Error" description={fetchError.message} type="error" showIcon />
+        )
+        }
+        <Spin spinning={isLoadingCouncilReport} tip="Loading...">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-sm-12 mb-3">
+                <h5>Ujumla ya Wanafunzi</h5>
+                <Table
+                  className="custom-table"
+                  columns={columns1}
+                  dataSource={data1}
+                  pagination={false}
+                />
               </div>
             </div>
+          </div>
 
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-sm-12">
-                  {isLoadingCouncilReport && <p></p>}
-                  {isErrorCouncilReport && <p>Error loading months.</p>}
-                  {!isLoadingCouncilReport && !isErrorCouncilReport && (
-                    <Table
-                      className='custom-table'
-                      columns={colsHalmashauri}
-                      dataSource={councilReport}
-                      scroll={{
-                        x: 2650,
-                      }}
-                    />
-                  )}
-                </div>
-                {/* /.col */}
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-sm-12">
+                <Table
+                  className="custom-table"
+                  columns={colsHalmashauri}
+                  dataSource={councilReport}
+                  scroll={{ x: 2650 }}
+                />
               </div>
-              {/* /.row */}
             </div>
-            {/* /.container-fluid */}
-
-          </>
-        )}
-
+          </div>
+        </Spin>
       </section>
-
-
-
 
     </>
   )

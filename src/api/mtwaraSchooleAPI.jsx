@@ -4,15 +4,16 @@ import axios from './axios';
 export const fetchMwatwaraSchools = async () => {
   const response = await axios.get('mtwara-schools/');
   if (!response.data) {
-    throw new Error('Network response was not ok');
+    throw new Error('Hakuna majibu ya mtandao');
   }
   return response.data;
 };
 
-
-
-// export const fetchMonth = async () => {
-//     const response = await axios.get('api/mtwara/report/month-list/');
-//     return response.data;
-//   };
+export const fetchAllStudent = async () => {
+  const response = await axios.get('student-count/report/');
+  if (!response.data) {
+    throw new Error('Hakuna majibu ya mtandao');
+  }
+  return response.data;
+};
 

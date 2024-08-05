@@ -2,12 +2,9 @@ import React, { useRef, useState } from 'react'
 import { useQuery } from 'react-query';
 import { SearchOutlined } from '@ant-design/icons';
 import { fetchMonth, fetchYear } from '../../api/upimajiFilterAPI';
-import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
 import { fetchAverage, fetchBoysPassed, fetchGirlsPassed, fetchRipotiYaMkoa } from '../../api/ripoti';
-import { Space, Table, Tag, Tabs, Input, Button } from 'antd';
-import { RipotiYaShuleChart } from '../../utils/Chart';
-import { render } from 'rsuite/esm/internals/utils';
-import axios from '../../api/axios';
+import { Space, Table, Input, Button, Alert, Select, Spin } from 'antd';
+
 
 export default function TaarifaYaMkoa() {
 
@@ -45,12 +42,13 @@ export default function TaarifaYaMkoa() {
   const { data: months, isLoading: isLoadingMonth, isError: isErrorMonth } =
     useQuery('months', fetchMonth);
 
-  const { data: ripotiYaMkoa, isLoading: isLoadingSchoolReport, isError: isErrorSchoolReport } =
+  const { data: ripotiYaMkoa,
+    isLoading: isLoadingSchoolReport,
+    isError: isErrorSchoolReport,
+    error: fetchError,
+  } =
     useQuery(['ripotiYaMkoa', month, year], fetchRipotiYaMkoa, { enabled: !!year && !!month });
 
-
-  // console.log(JSON.stringify(ripotiYaMkoa, null, 2))
-  // console.log(JSON.stringify(wastaniReport, null, 2))
 
 
   const colMkoa = [
@@ -377,100 +375,6 @@ export default function TaarifaYaMkoa() {
     setSearchText('');
   };
 
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{
-            marginBottom: 8,
-            display: 'block',
-          }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            close
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? '#1677ff' : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-    render: (text) =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{
-            backgroundColor: '#ffc069',
-            padding: 0,
-          }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
-  });
 
 
   return (
@@ -480,7 +384,7 @@ export default function TaarifaYaMkoa() {
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h4>Taarifa ya Mkoa</h4>
+              <h5>Taarifa ya Mkoa</h5>
             </div>
             <div class="col-sm-6">
               <div className='row'>
@@ -502,15 +406,15 @@ export default function TaarifaYaMkoa() {
                     ) : isErrorMonth ? (
                       <p>Error loading months.</p>
                     ) : (
-                      <select
-                        className="form-control"
-                        onChange={(e) => setMonth(e.target.value)}
+                      <Select
+                        defaultValue="Chagua Mwezi"
+                        style={{ width: 150 }}
+                        onChange={setMonth} // no need to wrap it with (e) => setYear(e.target.value)
                       >
-                        <option selected="selected" >--Chagua--</option>
-                        {months.map((m) => (
-                          <option key={m} value={m}>{m}</option>
+                        {months?.map((m) => (
+                          <Option key={m} value={m}>{m}</Option>
                         ))}
-                      </select>
+                      </Select>
                     )}
                   </div>
                 </div>
@@ -522,15 +426,15 @@ export default function TaarifaYaMkoa() {
                     ) : isErrorYear ? (
                       <p>Error loading years.</p>
                     ) : (
-                      <select
-                        className="form-control"
-                        onChange={(e) => setYear(e.target.value)}
+                      <Select
+                        defaultValue="Chagua Mwaka"
+                        style={{ width: 150 }}
+                        onChange={setYear} // no need to wrap it with (e) => setYear(e.target.value)
                       >
-                        <option selected="selected" >--Chagua--</option>
                         {years?.map((y) => (
-                          <option key={y} value={y}>{y}</option>
+                          <Option key={y} value={y}>{y}</Option>
                         ))}
-                      </select>
+                      </Select>
                     )}
                   </div>
                 </div>
@@ -547,10 +451,10 @@ export default function TaarifaYaMkoa() {
         <div className="container-fluid">
           <div className='row my-2'>
             <div className='col-10'>
-              <h5>
+              <h6>
                 Jedwali 1: Taarifa za watahiniwa waliosajiliwa na waliofanya upimaji
                 wa darasa la pili kwa kila halmashauri
-              </h5>
+              </h6>
             </div>
             <div className='col-2'>
               <Button type="primary">Chapisha PDF </Button>
@@ -558,9 +462,11 @@ export default function TaarifaYaMkoa() {
           </div>
           <div className="row">
             <div className="col-12">
-              {isLoadingSchoolReport && <p>Loading...</p>}
-              {isErrorSchoolReport && <p>Error loading months.</p>}
-              {!isLoadingSchoolReport && !isErrorSchoolReport && (
+              {fetchError && (
+                <Alert className='flex-center' message="Error" description={fetchError.message} type="error" showIcon />
+              )
+              }
+              <Spin spinning={isLoadingSchoolReport} tip="Loading...">
                 <Table
                   className='custom-table'
                   columns={colMkoa}
@@ -569,7 +475,7 @@ export default function TaarifaYaMkoa() {
                   scroll={{
                     x: 1000,
                   }} />
-              )}
+              </Spin>
             </div>
           </div>
         </div>
@@ -577,7 +483,7 @@ export default function TaarifaYaMkoa() {
         <div className="container-fluid mt-5">
           <div className='row my-3'>
             <div className='col-10'>
-              <h5 >Jedwali 2: Muhtasari wa Matokeo ya Upimaji Darasa la Pili Kimkoa</h5>
+              <h6 >Jedwali 2: Muhtasari wa Matokeo ya Upimaji Darasa la Pili Kimkoa</h6>
             </div>
             <div className='col-2'>
               <Button type="primary">Chapisha PDF </Button>
@@ -585,9 +491,11 @@ export default function TaarifaYaMkoa() {
           </div>
           <div className="row">
             <div className="col-12">
-              {isLoadingSchoolReport && <p>Loading...</p>}
-              {isErrorSchoolReport && <p>Error loading months.</p>}
-              {!isLoadingSchoolReport && !isErrorSchoolReport && (
+              {fetchError && (
+                <Alert className='flex-center' message="Error" description={fetchError.message} type="error" showIcon />
+              )
+              }
+              <Spin spinning={isLoadingSchoolReport} tip="Loading...">
                 <Table
                   className='custom-table'
                   columns={colsKuandika}
@@ -596,7 +504,7 @@ export default function TaarifaYaMkoa() {
                   scroll={{
                     x: 1000,
                   }} />
-              )}
+              </Spin>
             </div>
           </div>
         </div>

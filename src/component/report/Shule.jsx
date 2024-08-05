@@ -161,19 +161,15 @@ export default function Shule() {
       dataIndex: 'action',
       key: 'action',
       width: '15%',
-      render: (text,record,index) => {
+      render: (text, record, index) => {
         return (
           <Link>
-            <FileTextOutlined onClick={()=>setSchooleRecord(record)} />
+            <FileTextOutlined onClick={() => setSchooleRecord(record)} />
           </Link>
         );
       },
     },
   ];
-
-  if (isLoadingSchool) {
-    return <Spin className='d-flex-center' tip="Loading..." />;
-  }
 
   if (isErrorSchool) {
     return <Alert className='flex-center' message="Error" description={fetchError.message} type="error" showIcon />;
@@ -186,31 +182,30 @@ export default function Shule() {
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h4>Maelezo ya Shule</h4>
+              <h5>Maelezo ya Shule</h5>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">DataTables</li>
+                <li class="breadcrumb-item"><a href="#">Nyumbani</a></li>
+                <li class="breadcrumb-item active">shule</li>
               </ol>
             </div>
           </div>
         </div>
         <section className="content">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-12 mt-4">
-                <Table
-                  columns={columns}
-                  dataSource={schools}
-                  className='custom-table'
-                />
+          <Spin spinning={isLoadingSchool} tip="Loading..." >
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-12 mt-4">
+                  <Table
+                    columns={columns}
+                    dataSource={schools}
+                    className='custom-table'
+                  />
+                </div>
               </div>
-              {/* /.col */}
             </div>
-            {/* /.row */}
-          </div>
-          {/* /.container-fluid */}
+          </Spin>
         </section>
       </div>
     </>

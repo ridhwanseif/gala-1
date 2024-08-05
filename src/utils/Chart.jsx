@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Bar, Pie, Doughnut } from "react-chartjs-2";
+import { Spin } from 'antd';
 import './chart.css'
 import { useQuery } from "react-query";
 import { fetchMath, fetchRanking, fetchRankingWriting, fetchRegionSubAverage } from "../api/chartAPI";
@@ -27,16 +28,19 @@ ChartJS.register(
 
 // dashbosrd chart
 export function ChartBar({ month, year }) {
-  const [chartData, setChartData] = useState(null);
+  const [chartData, setChartData] = useState();
 
-  const { data: regionSubAverage, isLoading, isError } = useQuery(['regionSubAverage', month, year], () => fetchRegionSubAverage(month, year));
+  const { data: regionSubAverage } = useQuery(['regionSubAverage', month, year], () => fetchRegionSubAverage(month, year));
+
+  // Handle error state
+ 
 
   useEffect(() => {
     if (regionSubAverage) {
-      const labels = regionSubAverage?.map(item => item.wilaya);
-      const kusoma = regionSubAverage?.map(item => item.kusoma);
-      const kuandika = regionSubAverage?.map(item => item.kuandika);
-      const kuhesabu = regionSubAverage?.map(item => item.kuhesabu);
+      const labels = regionSubAverage.map(item => item.wilaya);
+      const kusoma = regionSubAverage.map(item => item.kusoma);
+      const kuandika = regionSubAverage.map(item => item.kuandika);
+      const kuhesabu = regionSubAverage.map(item => item.kuhesabu);
 
       setChartData({
         labels,
@@ -80,26 +84,21 @@ export function ChartBar({ month, year }) {
     },
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading data</div>;
-
   return (
-    <div>
+    <>
       {chartData ? (
-        <Bar className="barChart"
+        <Bar
+          className="barChart"
           data={chartData}
           options={options}
-
         />
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+      ) : null}
+    </>
   );
 }
 
 export function ChartBar1({ month, year }) {
-  const { data: ranking, isLoading, isError } = useQuery(['ranking', month, year], () => fetchRanking(month, year));
+  const { data: ranking } = useQuery(['ranking', month, year], () => fetchRanking(month, year));
   const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
@@ -142,9 +141,7 @@ export function ChartBar1({ month, year }) {
     },
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading data</div>;
-
+ 
   return (
     <div>
       {chartData ?
@@ -158,11 +155,9 @@ export function ChartBar1({ month, year }) {
 
 
 export function ChartBar2({ month, year }) {
-  const { data: ranking, isLoading, isError }
+  const { data: ranking }
     = useQuery(['ranking', month, year], () => fetchRankingWriting(month, year));
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading data</div>;
 
   const labels = ranking?.map(item => item.wilaya);
   const dataValues = ranking?.map(item => item.wastani);
@@ -205,11 +200,9 @@ export function ChartBar2({ month, year }) {
 }
 
 export function ChartBar3({ month, year }) {
-  const { data: ranking, isLoading, isError }
+  const { data: ranking }
     = useQuery(['ranking', month, year], () => fetchMath(month, year));
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading data</div>;
 
   const labels = ranking?.map(item => item.wilaya);
   const dataValues = ranking?.map(item => item.wastani);
@@ -316,9 +309,7 @@ export function RipotiYaShuleChart({ month, year }) {
           data={chartData}
           options={options}
         />
-      ) : (
-        <p>Loading...</p>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -565,9 +556,7 @@ export function UfauluWaKuhesabu({ year, month, council }) {
           options={options}
           height={2800}
         />
-      ) : (
-        <p>Loading...</p>
-      )}
+      ) : null}
     </div>
   );
 }

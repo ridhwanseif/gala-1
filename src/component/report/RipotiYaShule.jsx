@@ -4,7 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { fetchMonth, fetchYear } from '../../api/upimajiFilterAPI';
 import { fetchMwatwaraSchools } from '../../api/mtwaraSchooleAPI';
 import { fetchRipotiYaShule } from '../../api/ripoti';
-import { Space, Table, Tag, Tabs, Input, Button } from 'antd';
+import { Space, Table, Input, Button, Select, Spin, Alert } from 'antd';
 import { azuPassCount, boyCount, dhaifuCount, getComment, getComment100, getComment12, getComment16, getComment20, getComment24, getComment40, getComment8, girlCount, hajuiCount, imlaAverage, imlaPassCount, jum1Average, jum1PassCount, jum2Average, jum2PassCount, kkuAverage, kkuPassCount, kut1Average, kut1PassCount, kut2Average, kut2PassCount, mafAverage, mafPassCount, mykAverage, mykPassCount, ndogoAverage, ndogoPassCount, nzAverage, nzPassCount, progressTowardsThreshold, szhAverage, szhPassCount, uanAverage, utaAverage, utaPassCount, vituAverage, vituPassCount, vizuriCount, vizuriSanaCount, wastaniCount } from './ReportFunctions';
 import {
   Bar,
@@ -142,8 +142,12 @@ export default function RipotiYaShule() {
   const { data: months, isLoading: isLoadingMonth, isError: isErrorMonth } = useQuery('months', fetchMonth);
   const { data: schools, isLoading: isLoadingSchool, isError: isErrorSchool } = useQuery('schools', fetchMwatwaraSchools);
 
-  const { data: schoolReport, isLoading: isLoadingSchoolReport, isError: isErrorSchoolReport } =
-    useQuery(['schoolReport', month, year, schoolNo], fetchRipotiYaShule);
+  const {
+    data: schoolReport,
+    isLoading: isLoadingSchoolReport,
+    isError: isErrorSchoolReport,
+    error: fetchError,
+  } = useQuery(['schoolReport', month, year, schoolNo], fetchRipotiYaShule, { enabled: !!year && !!month });
 
   const transformedData = schoolReport ? schoolReport.map(report => ({
     id: report.id,
@@ -176,8 +180,6 @@ export default function RipotiYaShule() {
     hesT: report.hesT,
     jumla: report.jumla
   })) : [];
-
-
 
   const dataSource = [
     {
@@ -1119,6 +1121,14 @@ export default function RipotiYaShule() {
     doc.save('Ripoti_ya_shule_ya' + school + '_' + schoolNo + '.pdf');
   };
 
+  const handleChange = (value) => {
+    const selectedSchool = schools.find(y => y.school_reg_number === value);
+    setSchoolNo(value);
+    setSchool(selectedSchool ? selectedSchool.school_name : '');
+  };
+
+
+
   return (
     <>
       {/* Content Header (Page header) */}
@@ -1126,178 +1136,171 @@ export default function RipotiYaShule() {
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h4>Ripoti ya Shule</h4>
+              <h5>Ripoti ya Shule</h5>
             </div>
             <div class="col-sm-6">
               <div className='row'>
                 <div className='col-sm-12'>
                   <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">DataTables</li>
+                    <li class="breadcrumb-item"><a href="#">Nyumbani</a></li>
+                    <li class="breadcrumb-item active">RipotiYaShule</li>
                   </ol>
                 </div>
               </div>
-
-              <div className="row mt-3">
-                <div className="col-sm-6 float-right">
-
-                  <div className="form-group">
-                    <label>Shule</label>
-                    {isLoadingSchool ? (
-                      <p>Loading...</p>
-                    ) : isErrorSchool ? (
-                      <p>Error loading Shule.</p>
-                    ) : (
-                      <select
-                        className="form-control"
-                        onChange={(e) => {
-                          const selectedSchool = schools.find(y => y.school_reg_number === e.target.value);
-                          setSchoolNo(e.target.value);
-                          setSchool(selectedSchool ? selectedSchool.school_name : '');
-                        }}
-                        defaultValue=""
-                      >
-                        <option value="" disabled>--Chagua--</option>
-                        {schools?.map((y) => (
-                          <option key={y.id} value={y.school_reg_number}>
-                            {y.school_name}
-                          </option>
-                        ))}
-                      </select>
-                    )}
-                  </div>
-                </div>
-                <div className="col-sm-3 float-right">
-                  <div className="form-group">
-                    <label>Mwezi</label>
-                    {isLoadingMonth ? (
-                      <p>Loading...</p>
-                    ) : isErrorMonth ? (
-                      <p>Error loading months.</p>
-                    ) : (
-                      <select
-                        className="form-control"
-                        onChange={(e) => setMonth(e.target.value)}
-                      >
-                        <option selected="selected" >--Chagua--</option>
-                        {months.map((m) => (
-                          <option key={m} value={m}>{m}</option>
-                        ))}
-                      </select>
-                    )}
-                  </div>
-                </div>
-                <div className="col-sm-3 float-right">
-                  <div className="form-group">
-                    <label>Mwaka</label>
-                    {isLoadingYear ? (
-                      <p>Loading...</p>
-                    ) : isErrorYear ? (
-                      <p>Error loading years.</p>
-                    ) : (
-                      <select
-                        className="form-control"
-                        onChange={(e) => setYear(e.target.value)}
-                      >
-                        <option selected="selected" >--Chagua--</option>
-                        {years?.map((y) => (
-                          <option key={y} value={y}>{y}</option>
-                        ))}
-                      </select>
-                    )}
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div className="row py-2 mt-3">
+            <div className="col-sm-4 py-1 float-right">
+              <div className="form-group">
+                <label>Shule</label><br />
+                {isLoadingSchool ? (
+                  <p>Loading...</p>
+                ) : isErrorSchool ? (
+                  <p>Error loading Shule.</p>
+                ) : (
+                  <Select
+                    defaultValue="Chagua Shule"
+                    style={{ width: 200 }}
+                    onChange={handleChange}
+                    placeholder="--Chagua--"
+                    showSearch
+                    filterOption={(input, option) =>
+                      option.children.toLowerCase().includes(input.toLowerCase())
+                    }
+                  >
+                    {schools?.map((y) => (
+                      <Option key={y.id} value={y.school_reg_number}>
+                        {y.school_name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
               </div>
-
-              <div className="row mt-3">
-                <div className="col-sm-6 float-right">
-                  {/* <h5> Report ya shule ya <h5/> */}
-                </div>
-
-                <div className="col-sm-6 float-right">
-
-                </div>
+            </div>
+            <div className="col-sm-4 py-1 float-right">
+              <div className="form-group">
+                <label>Mwezi</label><br />
+                {isLoadingMonth ? (
+                  <p>Loading...</p>
+                ) : isErrorMonth ? (
+                  <p>Error loading months.</p>
+                ) : (
+                  <Select
+                    defaultValue="Chagua mwezi"
+                    style={{ width: 150 }}
+                    onChange={setMonth} // no need to wrap it with (e) => setYear(e.target.value)
+                  >
+                    {months?.map((m) => (
+                      <Option key={m} value={m}>{m}</Option>
+                    ))}
+                  </Select>
+                )}
               </div>
+            </div>
+            <div className="col-sm-4 py-1 float-right">
+              <div className="form-group">
+                <label>Mwaka</label><br />
+                {isLoadingYear ? (
+                  <p>Loading...</p>
+                ) : isErrorYear ? (
+                  <p>Error loading years.</p>
+                ) : (
+                  <Select
+                    defaultValue="Chagua mwaka"
+                    style={{ width: 150 }}
+                    onChange={setYear} // no need to wrap it with (e) => setYear(e.target.value)
+                  >
+                    {years?.map((y) => (
+                      <Option key={y} value={y}>{y}</Option>
+                    ))}
+                  </Select>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="row mt-3">
+            <div className="col-sm-6 float-right">
+              {/* <h5> Report ya shule ya <h5/> */}
+            </div>
+
+            <div className="col-sm-6 float-right">
 
             </div>
           </div>
+
         </div>
       </div>
       {/* /.content-header */}
 
-      <section className="content">
-        {isLoadingSchoolReport && <p>Loading...</p>}
-        {/* {isErrorSchoolReport && <p>Error loading months.</p>} */}
-        {!isLoadingSchoolReport && !isErrorSchoolReport && (
-          <>
-            <div className="container-fluid">
-              <div className='row my-3'>
-                <div className='col-10'>
-                  <h4 className='text-center'>
-                    Ripoti ya shule ya {school} - {schoolNo}
-                  </h4>
-                </div>
-                <div className='col-2'>
-                  <Button type="primary" onClick={() => handlePDF()}>Chapisha PDF </Button>
-                </div>
-                <hr />
+      <section section className="content" >
+        {fetchError && (
+          <Alert className='flex-center' message="Error" description={fetchError.message} type="error" showIcon />
+        )
+        }
+        <Spin spinning={isLoadingSchoolReport} tip="Loading...">
+          <div className="container-fluid">
+            <div className="row my-3">
+              <div className="col-10">
+                <h5 className="text-center">
+                  Ripoti ya shule ya {school} - {schoolNo}
+                </h5>
               </div>
-              <div className="row">
-                <div className='col-sm-12 mb-3'>
-                  <h4>Ujumla ya Wanafunzi</h4>
-
-                  <Table
-                    className='custom-table'
-                    columns={columns1}
-                    dataSource={data1}
-                    pagination={false} />
-                </div>
+              <div className="col-2">
+                <Button type="primary" onClick={() => handlePDF()}>
+                  Chapisha PDF
+                </Button>
+              </div>
+              <hr />
+            </div>
+            <div className="row">
+              <div className="col-sm-12 mb-3">
+                <h5 className='py-2'>Ujumla ya Wanafunzi</h5>
+                <Table
+                  className="custom-table"
+                  columns={columns1}
+                  dataSource={data1}
+                  pagination={false}
+                />
               </div>
             </div>
-
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-12">
-                  <Table
-                    className='custom-table'
-                    columns={columns}
-                    dataSource={schoolReport}
-                    scroll={{
-                      x: 4000,
-                    }} />
-                </div>
+          </div>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                <Table
+                  className="custom-table"
+                  columns={columns}
+                  dataSource={schoolReport}
+                  scroll={{ x: 4000 }}
+                />
               </div>
             </div>
-
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-12 py-5">
-                  <Table
-                    dataSource={dataSource}
-                    columns={columnsa}
-                    pagination={false}
-                    classNamea='custom-table'
-                    scroll={{
-                      x: 300,
-                    }}
-                  />
-                </div>
+          </div>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12 py-5">
+                <h5 className='py-2'>Muhtasari wa shule ya CHIPEMBE</h5>
+                <Table
+                  dataSource={dataSource}
+                  columns={columnsa}
+                  pagination={false}
+                  className="custom-table"
+                  scroll={{ x: 300 }}
+                />
               </div>
             </div>
-
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-12 h-6">
-                  <SubTaskAverage />
-                </div>
-                {/* /.col */}
+          </div>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12 h-6">
+                <SubTaskAverage />
               </div>
-              {/* /.row */}
             </div>
-            {/* /.container-fluid */}
-          </>
-        )}
-      </section>
+          </div>
+        </Spin>
+      </section >
+
     </>
   )
 }
